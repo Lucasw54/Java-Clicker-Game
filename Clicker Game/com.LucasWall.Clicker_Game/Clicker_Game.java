@@ -54,6 +54,7 @@ public class Clicker_Game implements ActionListener
 	public static JButton GUImode5Label;
 	public static JButton GUImode6Label;
 	public static JButton GUImode7Label;
+	public static JButton MakePencil;
 	
 	
 	
@@ -84,7 +85,8 @@ public class Clicker_Game implements ActionListener
 		GUIMODE4,
 		GUIMODE5,
 		GUIMODE6,
-		GUIMODE7
+		GUIMODE7,
+		MAKEPENCIL
 	}//End of Actions
 	
 	public static void Load() {
@@ -171,6 +173,7 @@ public class Clicker_Game implements ActionListener
 		//Calculate.addActionListener(instance);
 		//panel.add(Calculate);
 		
+		//----------Menu stuff
 		Quit1 = new JButton("Quit");
 		Quit1.setBounds(10, 10, 80, 25);
 		Quit1.setActionCommand(Actions.QUIT.name());
@@ -206,12 +209,21 @@ public class Clicker_Game implements ActionListener
 		panel.add(Back);
 		Back.setVisible(false);
 		
+		//-------------Game stuff
 		
 		PencilLabel = new JLabel("Pencils: " + number.format(Pencils));
 		PencilLabel.setBounds(20, 70, 1240, 25);
 		panel.add(PencilLabel);
 		PencilLabel.setFont(new Font("Serif", Font.PLAIN, 24));
 		PencilLabel.setVisible(false);
+		
+		MakePencil = new JButton("Make Pencil");
+		MakePencil.setBounds(10, 110, 120, 25);
+		MakePencil.setActionCommand(Actions.MAKEPENCIL.name());
+		MakePencil.addActionListener(instance);
+		panel.add(MakePencil);
+		MakePencil.setVisible(false);
+		
 		
 		//-------Options Window
 		GUImodeLabel = new JLabel("Window Size: ");
@@ -294,12 +306,13 @@ public class Clicker_Game implements ActionListener
 		//Shows Game - Specific Elements
 		WelcomeLabel.setVisible(true);
 		Divider1Label.setVisible(true);
-		PencilLabel.setVisible(true);
 		Save.setVisible(true);
 		Load.setVisible(true);
 		Options.setVisible(true);
-		//Calculate.setVisible(true);
 		Quit1.setVisible(true);
+		
+		PencilLabel.setVisible(true);
+		MakePencil.setVisible(true);
 	}
 	
 	public static void main(String[] args) 
@@ -334,7 +347,7 @@ public class Clicker_Game implements ActionListener
 			bar.setValue(counter);
 			try {//Beginning of try
 				//Make invisble while loading
-				Thread.sleep(25);
+				Thread.sleep(10);
 				Load.setBounds(850, 610, 80, 25);
 				}//End of try
 			
@@ -407,7 +420,6 @@ public class Clicker_Game implements ActionListener
 		//Quit GUI + End code
 		else if (e.getActionCommand() == Actions.QUIT.name())
 		{//Beginning of else if
-			System.out.println("Quit");
 			frame.dispose();
 		}//End of else if
 		
@@ -444,7 +456,13 @@ public class Clicker_Game implements ActionListener
 		{//Beginning of else if
 			frame.setSize(800,600);
 		}//End of else if
+		else if (e.getActionCommand() == Actions.MAKEPENCIL.name())
+		{//Beginning of else if
+			Pencils +=1;
+			PencilLabel.setText("Pencils: " + number.format(Pencils));
+			
+		}//End of else if
 		
-		
+	
 	}//End of actionPerformed
 }//End of Clicker_Game
