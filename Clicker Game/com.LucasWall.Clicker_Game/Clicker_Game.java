@@ -35,8 +35,8 @@ public class Clicker_Game implements ActionListener
 	private static JLabel WelcomeLabel;
 	private static JLabel label1;
 	private static JSeparator Divider1Label;
-	private static JLabel PencilLabel;
-	//private static JButton Calculate;
+	private static JLabel Inspiration1Label;
+	private static JLabel Inspiration2Label;
 	public static Clicker_Game instance;
 	private static JButton Quit1;
 	private static JButton Save;
@@ -54,13 +54,26 @@ public class Clicker_Game implements ActionListener
 	public static JButton GUImode5Label;
 	public static JButton GUImode6Label;
 	public static JButton GUImode7Label;
+	
+	//Gui - Game Globals
 	public static JButton MakePencil;
+	private static JLabel PencilLabel;
+	private static JLabel BusinessLabel;
+	private static JSeparator Business;
+	private static JLabel FundsLabel;
+	private static JLabel InventoryLabel;
+	private static JButton IncreasePrice;
+	private static JButton DecreasePrice;
+	private static JLabel PricePerPencilLabel;
+	private static JLabel Demand;
 	
 	
 	
 	//------Game Objects
 	
 	public static double Pencils = 0;
+	public static double Funds = 0;
+	public static double Inventory = 0;
 	
 	//------Establishing new colours
 	public static final Color TAX = new Color(158, 182, 222);
@@ -69,7 +82,7 @@ public class Clicker_Game implements ActionListener
 	public static final Color BLACK = new Color(1, 2, 2);
 	
 	//------Decimal Format
-	static DecimalFormat money = new DecimalFormat("$###,###,###.##");
+	static DecimalFormat money = new DecimalFormat("$###,###,##0.00");
 	static DecimalFormat number = new DecimalFormat("###,###,###");
 	
 	public enum Actions
@@ -173,6 +186,16 @@ public class Clicker_Game implements ActionListener
 		//Calculate.addActionListener(instance);
 		//panel.add(Calculate);
 		
+		Inspiration1Label = new JLabel("This Game was Heavily Inspired by Universal Paperclips:)");
+		Inspiration1Label.setBounds(450,650,400,20);
+		panel.add(Inspiration1Label);
+		Inspiration1Label.setVisible(true);
+		
+		Inspiration2Label = new JLabel("https://www.decisionproblem.com/paperclips/");
+		Inspiration2Label.setBounds(480,670,400,20);
+		panel.add(Inspiration2Label);
+		Inspiration2Label.setVisible(true);
+		
 		//----------Menu stuff
 		Quit1 = new JButton("Quit");
 		Quit1.setBounds(10, 10, 80, 25);
@@ -214,7 +237,7 @@ public class Clicker_Game implements ActionListener
 		PencilLabel = new JLabel("Pencils: " + number.format(Pencils));
 		PencilLabel.setBounds(20, 70, 1240, 25);
 		panel.add(PencilLabel);
-		PencilLabel.setFont(new Font("Serif", Font.PLAIN, 24));
+		PencilLabel.setFont(new Font("Serif", Font.BOLD, 24));
 		PencilLabel.setVisible(false);
 		
 		MakePencil = new JButton("Make Pencil");
@@ -224,6 +247,27 @@ public class Clicker_Game implements ActionListener
 		panel.add(MakePencil);
 		MakePencil.setVisible(false);
 		
+		BusinessLabel = new JLabel("Business");
+		BusinessLabel.setBounds(20, 160, 100, 25);
+		panel.add(BusinessLabel);
+		BusinessLabel.setFont(new Font("Serif", Font.BOLD, 18));
+		BusinessLabel.setVisible(false);
+		
+		Business = new JSeparator();
+		Business.setBounds(10, 180, 300, 25);
+		panel.add(Business);
+		Business.setVisible(false);
+		Business.setForeground(BLACK);
+		
+		FundsLabel = new JLabel("Available Funds: " + money.format(Funds));
+		FundsLabel.setBounds(20, 200, 400, 25);
+		panel.add(FundsLabel);
+		FundsLabel.setVisible(false);
+		
+		InventoryLabel = new JLabel("Unsold Inventory: " + number.format(Inventory));
+		InventoryLabel.setBounds(20, 220, 400, 25);
+		panel.add(InventoryLabel);
+		InventoryLabel.setVisible(false);
 		
 		//-------Options Window
 		GUImodeLabel = new JLabel("Window Size: ");
@@ -303,6 +347,8 @@ public class Clicker_Game implements ActionListener
 		//Hides Load - Specific Elements
 		label1.setVisible(false);
 		bar.setVisible(false);
+		Inspiration1Label.setVisible(false);
+		Inspiration2Label.setVisible(false);
 		//Shows Game - Specific Elements
 		WelcomeLabel.setVisible(true);
 		Divider1Label.setVisible(true);
@@ -313,6 +359,10 @@ public class Clicker_Game implements ActionListener
 		
 		PencilLabel.setVisible(true);
 		MakePencil.setVisible(true);
+		BusinessLabel.setVisible(true);
+		Business.setVisible(true);
+		FundsLabel.setVisible(true);
+		InventoryLabel.setVisible(true);
 	}
 	
 	public static void main(String[] args) 
@@ -369,6 +419,12 @@ public class Clicker_Game implements ActionListener
 		Back.setVisible(true);
 		
 		PencilLabel.setVisible(false);
+		MakePencil.setVisible(false);
+		BusinessLabel.setVisible(false);
+		Business.setVisible(false);
+		FundsLabel.setVisible(false);
+		InventoryLabel.setVisible(false);
+		
 		GUImodeLabel.setVisible(true);
 		GUImode1Label.setVisible(true);
 		GUImode2Label.setVisible(true);
@@ -459,7 +515,10 @@ public class Clicker_Game implements ActionListener
 		else if (e.getActionCommand() == Actions.MAKEPENCIL.name())
 		{//Beginning of else if
 			Pencils +=1;
+			Inventory = Pencils;
+	
 			PencilLabel.setText("Pencils: " + number.format(Pencils));
+			InventoryLabel.setText("Unsold Inventory: " + number.format(Inventory));
 			
 		}//End of else if
 		
