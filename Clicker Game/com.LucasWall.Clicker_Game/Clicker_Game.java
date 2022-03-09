@@ -65,8 +65,10 @@ public class Clicker_Game implements ActionListener
 	private static JButton IncreasePrice;
 	private static JButton DecreasePrice;
 	private static JLabel PricePerPencilLabel;
-	private static JLabel Demand;
-	
+	private static JLabel DemandLabel;
+	private static JButton MarketingUpgrade;
+	private static JLabel MarketingLvlLabel;
+	private static JLabel MarketingUpgradeCost;
 	
 	
 	//------Game Objects
@@ -74,6 +76,11 @@ public class Clicker_Game implements ActionListener
 	public static double Pencils = 0;
 	public static double Funds = 0;
 	public static double Inventory = 0;
+	public static double Price = 0.25;
+	public static double Demand = 0.32; 
+	public static double DemandShow = Demand*100;
+	public static double MarketingLvl = 1;
+	public static double UpgradeMarketingCost = 100;
 	
 	//------Establishing new colours
 	public static final Color TAX = new Color(158, 182, 222);
@@ -99,7 +106,10 @@ public class Clicker_Game implements ActionListener
 		GUIMODE5,
 		GUIMODE6,
 		GUIMODE7,
-		MAKEPENCIL
+		MAKEPENCIL,
+		PRICEDOWN,
+		PRICEUP,
+		MARKETINGUPGRADE
 	}//End of Actions
 	
 	public static void Load() {
@@ -260,14 +270,64 @@ public class Clicker_Game implements ActionListener
 		Business.setForeground(BLACK);
 		
 		FundsLabel = new JLabel("Available Funds: " + money.format(Funds));
-		FundsLabel.setBounds(20, 200, 400, 25);
+		FundsLabel.setBounds(20, 190, 400, 25);
 		panel.add(FundsLabel);
 		FundsLabel.setVisible(false);
 		
 		InventoryLabel = new JLabel("Unsold Inventory: " + number.format(Inventory));
-		InventoryLabel.setBounds(20, 220, 400, 25);
+		InventoryLabel.setBounds(20, 210, 400, 25);
 		panel.add(InventoryLabel);
 		InventoryLabel.setVisible(false);
+		
+		PricePerPencilLabel = new JLabel("Price per Pencil: " +money.format(Price));
+		PricePerPencilLabel.setBounds(80, 230, 400, 25);
+		panel.add(PricePerPencilLabel);
+		PricePerPencilLabel.setVisible(false);
+				
+	    IncreasePrice = new JButton("+");
+	    IncreasePrice.setBounds(40, 230, 40, 25);
+		IncreasePrice.setActionCommand(Actions.PRICEUP.name());
+		IncreasePrice.addActionListener(instance);
+		panel.add(IncreasePrice);
+		IncreasePrice.setVisible(false);
+		
+		DecreasePrice = new JButton("-");
+		DecreasePrice.setBounds(10, 230, 40, 25);
+		DecreasePrice.setActionCommand(Actions.PRICEDOWN.name());
+		DecreasePrice.addActionListener(instance);
+		panel.add(DecreasePrice);
+		DecreasePrice.setVisible(false);
+		
+		DemandLabel = new JLabel("Public Demand: " + DemandShow +"%");
+		DemandLabel.setBounds(20, 250, 300, 25);
+		panel.add(DemandLabel);
+		DemandLabel.setVisible(false);
+		
+		MarketingUpgrade = new JButton("Marketing");
+		MarketingUpgrade.setBounds(10, 290, 100, 25);
+		MarketingUpgrade.setActionCommand(Actions.MARKETINGUPGRADE.name());
+		MarketingUpgrade.addActionListener(instance);
+		panel.add(MarketingUpgrade);
+		MarketingUpgrade.setVisible(false);
+		
+		if(Funds >= UpgradeMarketingCost) {
+			MarketingUpgrade.setEnabled(true);
+		}
+		else if(Funds <= UpgradeMarketingCost){
+			MarketingUpgrade.setEnabled(false);
+		}
+		
+		
+		MarketingLvlLabel = new JLabel("Level: " + number.format(MarketingLvl));
+		MarketingLvlLabel.setBounds(110, 290, 100, 25);
+		panel.add(MarketingLvlLabel);
+		MarketingLvlLabel.setVisible(false);
+
+		MarketingUpgradeCost = new JLabel("Cost: " + UpgradeMarketingCost);
+		MarketingUpgradeCost.setBounds(20, 310, 100, 25);
+		panel.add(MarketingUpgradeCost);
+		MarketingUpgradeCost.setVisible(false);
+
 		
 		//-------Options Window
 		GUImodeLabel = new JLabel("Window Size: ");
@@ -363,6 +423,15 @@ public class Clicker_Game implements ActionListener
 		Business.setVisible(true);
 		FundsLabel.setVisible(true);
 		InventoryLabel.setVisible(true);
+		PricePerPencilLabel.setVisible(true);
+		IncreasePrice.setVisible(true);
+		DecreasePrice.setVisible(true);
+		DemandLabel.setVisible(true);
+		MarketingUpgrade.setVisible(true);
+		MarketingLvlLabel.setVisible(true);
+		MarketingUpgradeCost.setVisible(true);
+		
+
 	}
 	
 	public static void main(String[] args) 
@@ -424,6 +493,13 @@ public class Clicker_Game implements ActionListener
 		Business.setVisible(false);
 		FundsLabel.setVisible(false);
 		InventoryLabel.setVisible(false);
+		PricePerPencilLabel.setVisible(false);
+		IncreasePrice.setVisible(false);
+		DecreasePrice.setVisible(false);
+		DemandLabel.setVisible(false);
+		MarketingUpgrade.setVisible(false);
+		MarketingLvlLabel.setVisible(false);
+		MarketingUpgradeCost.setVisible(false);
 		
 		GUImodeLabel.setVisible(true);
 		GUImode1Label.setVisible(true);
@@ -521,7 +597,83 @@ public class Clicker_Game implements ActionListener
 			InventoryLabel.setText("Unsold Inventory: " + number.format(Inventory));
 			
 		}//End of else if
+		else if (e.getActionCommand() == Actions.PRICEDOWN.name())
+		{//Beginning of else if
 		
+		if (Price >=0.01) {
+			Price -= 0.01;
+			
+			DemandShow = Demand*100;
+			
+			if (Price >= 0.01 && Price <=0.05) {
+				Demand += 0.10;
+			}
+			else if(Price >= 0.06 && Price <=0.10) {
+				Demand += 0.5;
+			}
+			else if(Price >= 0.11 && Price <=0.15) {
+				Demand += 0.03;
+			} 
+			else if(Price >= 0.16 && Price <=0.20) {
+				Demand += 0.02;
+			} 
+			else if(Price >= 0.21 && Price <=0.25) {
+				Demand += 0.01;
+			}
+			else if(Price >= 0.26 && Price <=0.30) {
+				Demand += 0.05;
+			}
+			else if(Price >= 0.31 && Price <=0.40) {
+				Demand += 0.025;
+			}
+		}
+		
+		
+		DemandLabel.setText("Public Demand: " + number.format(DemandShow) +"%");
+		PricePerPencilLabel.setText("Price per Pencil: " +money.format(Price));
+		}
+		else if (e.getActionCommand() == Actions.PRICEUP.name())
+		{//Beginning of else if
+			
+		Price += 0.01;
+		
+		DemandShow = Demand*100;
+		
+		if (Price >= 0.01 && Price <=0.05) {
+			Demand -= 0.10;
+		}
+		else if(Price >= 0.06 && Price <=0.10) {
+			Demand -= 0.5;
+		}
+		else if(Price >= 0.11 && Price <=0.15) {
+			Demand -= 0.03;
+		} 
+		else if(Price >= 0.16 && Price <=0.20) {
+			Demand -= 0.02;
+		} 
+		else if(Price >= 0.21 && Price <=0.25) {
+			Demand -= 0.01;
+		}
+		else if(Price >= 0.26 && Price <=0.30) {
+			Demand -= 0.05;
+		}
+		else if(Price >= 0.31 && Price <=0.40) {
+			Demand -= 0.025;
+		}
+		System.out.println(DemandShow);
+		
+		DemandLabel.setText("Public Demand: " + number.format(DemandShow) +"%");
+		PricePerPencilLabel.setText("Price per Pencil: " +money.format(Price));
+		}
+		else if (e.getActionCommand() == Actions.MARKETINGUPGRADE.name())
+		{//Beginning of else if
+		if (Funds >= UpgradeMarketingCost) {
+			MarketingLvl += 1;
+			Funds -= UpgradeMarketingCost;
+			MarketingLvlLabel.setText("Level: " + number.format(MarketingLvl));
+			FundsLabel.setText("Available Funds: " + money.format(Funds));
+		}
+		}
 	
 	}//End of actionPerformed
 }//End of Clicker_Game
