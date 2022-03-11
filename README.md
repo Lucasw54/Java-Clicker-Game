@@ -1,2 +1,2 @@
 # Java-Clicker-Game
-A clicker game made in Java
+A clicker game made in Java.
