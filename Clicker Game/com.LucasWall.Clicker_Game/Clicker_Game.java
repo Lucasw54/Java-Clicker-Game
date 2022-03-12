@@ -94,6 +94,7 @@ public class Clicker_Game implements ActionListener
 	//-----Selling
 	public static int result = 0;
 	public static int SellDemand = 0;
+	public static boolean d = true;
 	
 	//------Game Objects
 	
@@ -107,8 +108,8 @@ public class Clicker_Game implements ActionListener
 	public static double UpgradeMarketingCost = 100;
 	private static double InventorySubbed;
 	private static double PencilsPerSecondValue;
-	private static double WoodAmt = 0;
-	private static double LeadAmt = 0;
+	private static double WoodAmt = 1000;
+	private static double LeadAmt = 500;
 	private static double WoodCost = 5;
 	private static double LeadCost = 7;
 	private static double AssemblerAmt = 0;
@@ -123,6 +124,7 @@ public class Clicker_Game implements ActionListener
 	//------Decimal Format
 	static DecimalFormat money = new DecimalFormat("$###,###,##0.00");
 	static DecimalFormat number = new DecimalFormat("###,###,###");
+	static DecimalFormat seminumber = new DecimalFormat("###,###,##0.00");
 	
 	public enum Actions
 	{//Beginning of Actions
@@ -421,7 +423,7 @@ public class Clicker_Game implements ActionListener
 		AutoAssemblerBuy.setVisible(false);
 		AutoAssemblerBuy.setEnabled(false);
 		
-		AutoAssemblerLabel = new JLabel(number.format(AssemblerAmt));
+		AutoAssemblerLabel = new JLabel(seminumber.format(AssemblerAmt));
 		AutoAssemblerLabel.setBounds(160, 530, 300, 25);
 		panel.add(AutoAssemblerLabel);
 		AutoAssemblerLabel.setVisible(false);
@@ -571,19 +573,39 @@ public class Clicker_Game implements ActionListener
 				e.printStackTrace();
 			}//End of catch
 			DemandShow = Demand/100;
+			if(WoodAmt >= 2 && LeadAmt >= 1) {
+				MakePencil.setEnabled(true);
+			}
+			else if (WoodAmt <= 2 || LeadAmt <= 1) {
+				MakePencil.setEnabled(false);
+			}
 			if(Funds >= UpgradeMarketingCost) {
 				MarketingUpgrade.setEnabled(true);
+			}
+			else if (Funds <= UpgradeMarketingCost) {
+				MarketingUpgrade.setEnabled(false);
 			}
 			if(Funds >= WoodCost) {
 				WoodBuy.setEnabled(true);
 			}
+			else if (Funds <= WoodCost) {
+				WoodBuy.setEnabled(false);
+			}
 			if(Funds >= LeadCost) {
 				LeadBuy.setEnabled(true);
+			}
+			else if (Funds <= LeadCost) {
+				LeadBuy.setEnabled(false);
 			}
 			if(Funds >= AssemblerCost) {
 				AutoAssemblerBuy.setEnabled(true);
 			}
+			else if (Funds <= AssemblerCost) {
+				AutoAssemblerBuy.setEnabled(false);
+			}
+			
 		}
+		
 	}
 	
 	public static void fill()
@@ -655,6 +677,27 @@ public class Clicker_Game implements ActionListener
 	}
 	
 	public static void SellCalcs() {
+		//Sells every segment of time and  keeps from going negative
+		if (WoodAmt >= AssemblerAmt && LeadAmt >= AssemblerAmt) {
+			if (AssemblerAmt >= 1) {
+			Pencils += AssemblerAmt;
+			Inventory += AssemblerAmt;
+			WoodAmt -= AssemblerAmt*2;
+			LeadAmt -= AssemblerAmt;
+			d = true;
+			}
+		}
+		//Sells remaining few 
+		else if(WoodAmt < AssemblerAmt || LeadAmt < AssemblerAmt) {
+			if (AssemblerAmt >= 1 && d == true) {	
+			Pencils += WoodAmt/2;
+			Inventory += WoodAmt/2;
+			WoodAmt -= WoodAmt;
+			LeadAmt -= LeadAmt;
+			PencilsPerSecondValue = AssemblerAmt/5;
+			d = false;
+			}
+		}
 		if(Inventory ==  0) {
 		}
 		else if(Inventory > 0) {
@@ -784,6 +827,9 @@ public class Clicker_Game implements ActionListener
 			Funds += InventorySubbed*Price;
 			InventoryLabel.setText("Unsold Inventory: " + number.format(Inventory));
 			FundsLabel.setText("Available Funds: " + money.format(Funds));
+			PencilLabel.setText("Pencils: " + number.format(Pencils));
+			WoodAmtLabel.setText(number.format(WoodAmt) + " pieces");
+			LeadAmtLabel.setText(number.format(LeadAmt) + " rods");
 		}
 		
 	}
@@ -868,10 +914,16 @@ public class Clicker_Game implements ActionListener
 		}//End of else if
 		else if (e.getActionCommand() == Actions.MAKEPENCIL.name())
 		{//Beginning of else if
+			if (WoodAmt >= 2 && LeadAmt >= 1) {
 			Pencils +=1;
 			Inventory += 1;
+			WoodAmt -= 2;
+			LeadAmt -= 1;
 			PencilLabel.setText("Pencils: " + number.format(Pencils));
 			InventoryLabel.setText("Unsold Inventory: " + number.format(Inventory));
+			WoodAmtLabel.setText(number.format(WoodAmt) + " pieces");
+			LeadAmtLabel.setText(number.format(LeadAmt) + " rods");
+			}
 		}//End of else if
 		else if (e.getActionCommand() == Actions.PRICEDOWN.name())
 		{//Beginning of else if
@@ -954,33 +1006,35 @@ public class Clicker_Game implements ActionListener
 			DemandLabel.setText("Public Demand: " + number.format(DemandShow) +"%");
 			FundsLabel.setText("Available Funds: " + money.format(Funds));
 		}
+		}
 		else if (e.getActionCommand() == Actions.WOOD.name())
 		{
-			if (Funds >= WoodCost) {
-				WoodAmt += 1;
-				Funds -= WoodCost;
-				WoodAmtLabel.setText(number.format(WoodAmt) + " pieces");
-				FundsLabel.setText("Available Funds: " + money.format(Funds));
-			}
+		if (Funds >= WoodCost) {
+			WoodAmt += 1000;
+			Funds -= WoodCost;
+			WoodAmtLabel.setText(number.format(WoodAmt) + " pieces");
+			FundsLabel.setText("Available Funds: " + money.format(Funds));
+		}
 		}	
 		else if (e.getActionCommand() == Actions.LEAD.name())
 		{
-			if (Funds >= LeadCost) {
-				LeadAmt += 1;
-				Funds -= LeadCost;
-				LeadAmtLabel.setText(number.format(LeadAmt) + " rods");
-				FundsLabel.setText("Available Funds: " + money.format(Funds));
-			}
+		if (Funds >= LeadCost) {
+			LeadAmt += 500;
+			Funds -= LeadCost;
+			LeadAmtLabel.setText(number.format(LeadAmt) + " rods");
+			FundsLabel.setText("Available Funds: " + money.format(Funds));
+		}
 		}
 			
 		else if (e.getActionCommand() == Actions.ASSEMBLERBUY.name())
 		{
-			if (Funds >= AssemblerCost) {
-				AssemblerAmt += 1;
-				Funds -= AssemblerCost;
-				AutoAssemblerLabel.setText(number.format(AssemblerAmt));
-				FundsLabel.setText("Available Funds: " + money.format(Funds));
-			}
+		if (Funds >= AssemblerCost) {
+			AssemblerAmt += 1;
+			Funds -= AssemblerCost;
+			AutoAssemblerLabel.setText(number.format(AssemblerAmt));
+			FundsLabel.setText("Available Funds: " + money.format(Funds));
+			PencilsPerSecondValue = AssemblerAmt/5;
+			PencilsPerSecond.setText("Pencils per Second: " + seminumber.format(PencilsPerSecondValue));
 		}
 		}
 	}//End of actionPerformed
