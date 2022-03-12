@@ -9,21 +9,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.Timer;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JSeparator;
-import javax.swing.JTextField;
 
 public class Clicker_Game implements ActionListener
 {//Beginning of Clicker_Game
@@ -34,6 +35,7 @@ public class Clicker_Game implements ActionListener
 	private static JFrame frame;
 	private static JLabel WelcomeLabel;
 	private static JLabel label1;
+	private static JLabel label2;
 	private static JSeparator Divider1Label;
 	private static JLabel Inspiration1Label;
 	private static JLabel Inspiration2Label;
@@ -69,7 +71,29 @@ public class Clicker_Game implements ActionListener
 	private static JButton MarketingUpgrade;
 	private static JLabel MarketingLvlLabel;
 	private static JLabel MarketingUpgradeCost;
+	private static JLabel ManufacturingLabel;
+	private static JSeparator ManufacturingSeperator;
+	private static JLabel PencilsPerSecond;
+	private static JButton WoodBuy;
+	private static JLabel WoodAmtLabel;
+	private static JLabel WoodCostLabel;
+	private static JButton LeadBuy;
+	private static JLabel LeadAmtLabel;
+	private static JLabel LeadCostLabel;
+	private static JButton AutoAssemblerBuy;
+	private static JLabel AutoAssemblerLabel;
+	private static JLabel AutoAssemblerCostLabel;
 	
+	
+	//----Miscelaneous 
+	public static boolean a = false;//Disabling buttons
+	public static boolean b = false;
+
+	public static int c = 0;
+	
+	//-----Selling
+	public static int result = 0;
+	public static int SellDemand = 0;
 	
 	//------Game Objects
 	
@@ -77,10 +101,18 @@ public class Clicker_Game implements ActionListener
 	public static double Funds = 0;
 	public static double Inventory = 0;
 	public static double Price = 0.25;
-	public static double Demand = 0.32; 
-	public static double DemandShow = Demand*100;
+	public static int Demand = 3200; 
+	public static double DemandShow = Demand/100;
 	public static double MarketingLvl = 1;
 	public static double UpgradeMarketingCost = 100;
+	private static double InventorySubbed;
+	private static double PencilsPerSecondValue;
+	private static double WoodAmt = 0;
+	private static double LeadAmt = 0;
+	private static double WoodCost = 5;
+	private static double LeadCost = 7;
+	private static double AssemblerAmt = 0;
+	private static double AssemblerCost = 5;
 	
 	//------Establishing new colours
 	public static final Color TAX = new Color(158, 182, 222);
@@ -109,7 +141,10 @@ public class Clicker_Game implements ActionListener
 		MAKEPENCIL,
 		PRICEDOWN,
 		PRICEUP,
-		MARKETINGUPGRADE
+		MARKETINGUPGRADE,
+		WOOD,
+		LEAD,
+		ASSEMBLERBUY
 	}//End of Actions
 	
 	public static void Load() {
@@ -163,22 +198,31 @@ public class Clicker_Game implements ActionListener
 			}
 		});
 		
-		BufferedImage img = null;
+		BufferedImage img1 = null;
+		BufferedImage img2 = null;
 		try {
-		    img = ImageIO.read(new File("Universal_Paperclips_Title_Screen.png"));
+			img1 = ImageIO.read(new File("Universal_Paperclips_Title_Screen.png"));
+		    img2 = ImageIO.read(new File("LVL1Pencil.png"));
 		} catch (IOException e) {
 		    e.printStackTrace();
 		}
 		
-		Image dimg = img.getScaledInstance(600, 450, 100);
+		Image dimg = img1.getScaledInstance(600, 450, 100);
+		Image eimg = img2.getScaledInstance(40, 30, 100);
 		
 		//Creating image icons
 		ImageIcon image1 = new ImageIcon(dimg);
+		ImageIcon image2 = new ImageIcon(eimg);
 		
 		//image loading screen
 		label1 = new JLabel(image1);
 		label1.setBounds(350,100,600,450);
 		panel.add(label1);
+		
+		label2 = new JLabel(image2);
+		label2.setBounds(5,65,40,30);
+		panel.add(label2);
+		label2.setVisible(false);
 		
 		WelcomeLabel = new JLabel("");
 		panel.add(WelcomeLabel);
@@ -191,11 +235,6 @@ public class Clicker_Game implements ActionListener
 		Divider1Label.setForeground(BLACK);
 		Divider1Label.setVisible(false);
 
-		//Calculate = new JButton("Calculate");
-		//Calculate.setActionCommand(Actions.CALCULATE.name());
-		//Calculate.addActionListener(instance);
-		//panel.add(Calculate);
-		
 		Inspiration1Label = new JLabel("This Game was Heavily Inspired by Universal Paperclips:)");
 		Inspiration1Label.setBounds(450,650,400,20);
 		panel.add(Inspiration1Label);
@@ -245,7 +284,7 @@ public class Clicker_Game implements ActionListener
 		//-------------Game stuff
 		
 		PencilLabel = new JLabel("Pencils: " + number.format(Pencils));
-		PencilLabel.setBounds(20, 70, 1240, 25);
+		PencilLabel.setBounds(40, 70, 1240, 25);
 		panel.add(PencilLabel);
 		PencilLabel.setFont(new Font("Serif", Font.BOLD, 24));
 		PencilLabel.setVisible(false);
@@ -298,7 +337,7 @@ public class Clicker_Game implements ActionListener
 		panel.add(DecreasePrice);
 		DecreasePrice.setVisible(false);
 		
-		DemandLabel = new JLabel("Public Demand: " + DemandShow +"%");
+		DemandLabel = new JLabel("Public Demand: " + number.format(DemandShow) +"%");
 		DemandLabel.setBounds(20, 250, 300, 25);
 		panel.add(DemandLabel);
 		DemandLabel.setVisible(false);
@@ -309,14 +348,7 @@ public class Clicker_Game implements ActionListener
 		MarketingUpgrade.addActionListener(instance);
 		panel.add(MarketingUpgrade);
 		MarketingUpgrade.setVisible(false);
-		
-		if(Funds >= UpgradeMarketingCost) {
-			MarketingUpgrade.setEnabled(true);
-		}
-		else if(Funds <= UpgradeMarketingCost){
-			MarketingUpgrade.setEnabled(false);
-		}
-		
+		MarketingUpgrade.setEnabled(false);
 		
 		MarketingLvlLabel = new JLabel("Level: " + number.format(MarketingLvl));
 		MarketingLvlLabel.setBounds(110, 290, 100, 25);
@@ -327,7 +359,77 @@ public class Clicker_Game implements ActionListener
 		MarketingUpgradeCost.setBounds(20, 310, 100, 25);
 		panel.add(MarketingUpgradeCost);
 		MarketingUpgradeCost.setVisible(false);
-
+		
+		ManufacturingLabel = new JLabel("Manufacturing");
+		ManufacturingLabel.setBounds(20, 350, 160, 25);
+		panel.add(ManufacturingLabel);
+		ManufacturingLabel.setFont(new Font("Serif", Font.BOLD, 18));
+		ManufacturingLabel.setVisible(false);
+		
+		ManufacturingSeperator = new JSeparator();
+		ManufacturingSeperator.setBounds(10, 370, 300, 25);
+		panel.add(ManufacturingSeperator);
+		ManufacturingSeperator.setVisible(false);
+		ManufacturingSeperator.setForeground(BLACK);
+		
+		PencilsPerSecond = new JLabel("Pencils per Second: " + number.format(PencilsPerSecondValue));
+		PencilsPerSecond.setBounds(20, 380, 300, 25);
+		panel.add(PencilsPerSecond);
+		PencilsPerSecond.setVisible(false);
+		
+		WoodBuy = new JButton("Wood");
+		WoodBuy.setBounds(10,410,80,25);
+		WoodBuy.setActionCommand(Actions.WOOD.name());
+		WoodBuy.addActionListener(instance);
+		panel.add(WoodBuy);
+		WoodBuy.setVisible(false);
+		WoodBuy.setEnabled(false);
+		
+		WoodAmtLabel = new JLabel(number.format(WoodAmt) + " pieces");
+		WoodAmtLabel.setBounds(90, 410, 300, 25);
+		panel.add(WoodAmtLabel);
+		WoodAmtLabel.setVisible(false);
+		
+		WoodCostLabel = new JLabel("Cost: " + money.format(WoodCost));
+		WoodCostLabel.setBounds(20, 430, 300, 25);
+		panel.add(WoodCostLabel);
+		WoodCostLabel.setVisible(false);
+		
+		LeadBuy = new JButton("Lead");
+		LeadBuy.setBounds(10,470,80,25);
+		LeadBuy.setActionCommand(Actions.LEAD.name());
+		LeadBuy.addActionListener(instance);
+		panel.add(LeadBuy);
+		LeadBuy.setVisible(false);
+		LeadBuy.setEnabled(false);
+		
+		LeadAmtLabel = new JLabel(number.format(LeadAmt) + " rods");
+		LeadAmtLabel.setBounds(90, 470, 300, 25);
+		panel.add(LeadAmtLabel);
+		LeadAmtLabel.setVisible(false);
+		
+		LeadCostLabel = new JLabel("Cost: " + money.format(LeadCost));
+		LeadCostLabel.setBounds(20, 490, 300, 25);
+		panel.add(LeadCostLabel);
+		LeadCostLabel.setVisible(false);
+		
+		AutoAssemblerBuy = new JButton("AutoAssemblers");
+		AutoAssemblerBuy.setBounds(10,530,150,25);
+		AutoAssemblerBuy.setActionCommand(Actions.ASSEMBLERBUY.name());
+		AutoAssemblerBuy.addActionListener(instance);
+		panel.add(AutoAssemblerBuy);
+		AutoAssemblerBuy.setVisible(false);
+		AutoAssemblerBuy.setEnabled(false);
+		
+		AutoAssemblerLabel = new JLabel(number.format(AssemblerAmt));
+		AutoAssemblerLabel.setBounds(160, 530, 300, 25);
+		panel.add(AutoAssemblerLabel);
+		AutoAssemblerLabel.setVisible(false);
+		
+		AutoAssemblerCostLabel = new JLabel("Cost: " + money.format(AssemblerCost));
+		AutoAssemblerCostLabel.setBounds(20, 550, 300, 25);
+		panel.add(AutoAssemblerCostLabel);
+		AutoAssemblerCostLabel.setVisible(false);
 		
 		//-------Options Window
 		GUImodeLabel = new JLabel("Window Size: ");
@@ -398,11 +500,14 @@ public class Clicker_Game implements ActionListener
 		
 		if (panel.isVisible()) 
 		{//Beginning of if
-			
 			fill();
 		}//End of if
+		Modes();
 	}
-	
+	public static void Modes() {
+		Timer timer = new Timer();
+		timer.schedule(new Timer_Sell(), 0, 5000);
+	}
 	public static void Game() {
 		//Hides Load - Specific Elements
 		label1.setVisible(false);
@@ -410,6 +515,7 @@ public class Clicker_Game implements ActionListener
 		Inspiration1Label.setVisible(false);
 		Inspiration2Label.setVisible(false);
 		//Shows Game - Specific Elements
+		label2.setVisible(true);
 		WelcomeLabel.setVisible(true);
 		Divider1Label.setVisible(true);
 		Save.setVisible(true);
@@ -430,8 +536,18 @@ public class Clicker_Game implements ActionListener
 		MarketingUpgrade.setVisible(true);
 		MarketingLvlLabel.setVisible(true);
 		MarketingUpgradeCost.setVisible(true);
-		
-
+		ManufacturingLabel.setVisible(true);
+		ManufacturingSeperator.setVisible(true);
+		PencilsPerSecond.setVisible(true);
+		WoodBuy.setVisible(true);
+		WoodAmtLabel.setVisible(true);
+		WoodCostLabel.setVisible(true);
+		LeadBuy.setVisible(true);
+		LeadAmtLabel.setVisible(true);
+		LeadCostLabel.setVisible(true);
+		AutoAssemblerBuy.setVisible(true);
+		AutoAssemblerLabel.setVisible(true);
+		AutoAssemblerCostLabel.setVisible(true);
 	}
 	
 	public static void main(String[] args) 
@@ -454,6 +570,19 @@ public class Clicker_Game implements ActionListener
 			{//Beginning of catch
 				e.printStackTrace();
 			}//End of catch
+			DemandShow = Demand/100;
+			if(Funds >= UpgradeMarketingCost) {
+				MarketingUpgrade.setEnabled(true);
+			}
+			if(Funds >= WoodCost) {
+				WoodBuy.setEnabled(true);
+			}
+			if(Funds >= LeadCost) {
+				LeadBuy.setEnabled(true);
+			}
+			if(Funds >= AssemblerCost) {
+				AutoAssemblerBuy.setEnabled(true);
+			}
 		}
 	}
 	
@@ -500,6 +629,19 @@ public class Clicker_Game implements ActionListener
 		MarketingUpgrade.setVisible(false);
 		MarketingLvlLabel.setVisible(false);
 		MarketingUpgradeCost.setVisible(false);
+		label2.setVisible(false);
+		ManufacturingLabel.setVisible(false);
+		ManufacturingSeperator.setVisible(false);
+		PencilsPerSecond.setVisible(false);
+		WoodBuy.setVisible(false);
+		WoodAmtLabel.setVisible(false);
+		WoodCostLabel.setVisible(false);
+		LeadBuy.setVisible(false);
+		LeadAmtLabel.setVisible(false);
+		LeadCostLabel.setVisible(false);
+		AutoAssemblerBuy.setVisible(false);
+		AutoAssemblerLabel.setVisible(false);
+		AutoAssemblerCostLabel.setVisible(false);
 		
 		GUImodeLabel.setVisible(true);
 		GUImode1Label.setVisible(true);
@@ -511,7 +653,143 @@ public class Clicker_Game implements ActionListener
 		GUImode7Label.setVisible(true);
 
 	}
+	
+	public static void SellCalcs() {
+		if(Inventory ==  0) {
+		}
+		else if(Inventory > 0) {
+			if(Inventory == 1)
+			{
+				if (Demand > 0 && Demand <= 1000) {
+					SellDemand =1;
+				}
+				if (Demand > 1000 && Demand <= 2000) {
+					SellDemand =1;
+				}
+				if (Demand > 2000 && Demand <= 3000) {
+					SellDemand =1;
+				}
+				if (Demand > 3000 && Demand <= 4000) {
+					SellDemand =1;
+				}
+				if (Demand > 4000 && Demand <= 5000) {
+					SellDemand =1;
+				}
+				if (Demand > 5000) {
+					SellDemand =1;
+				}
+			}
+			else if (Inventory == 2) {
+				if (Demand > 0 && Demand <= 1000) {
+					SellDemand =1;
+				}
+				if (Demand > 1000 && Demand <= 2000) {
+					SellDemand =2;
+				}
+				if (Demand > 2000 && Demand <= 3000) {
+					SellDemand =2;
+				}
+				if (Demand > 3000 && Demand <= 4000) {
+					SellDemand =2;
+				}
+				if (Demand > 4000 && Demand <= 5000) {
+					SellDemand =2;
+				}
+				if (Demand > 5000) {
+					SellDemand =2;
+				}
+			}
+			else if (Inventory == 3) {
+				if (Demand > 0 && Demand <= 1000) {
+					SellDemand =1;
+				}
+				if (Demand > 1000 && Demand <= 2000) {
+					SellDemand =2;
+				}
+				if (Demand > 2000 && Demand <= 3000) {
+					SellDemand =3;
+				}
+				if (Demand > 3000 && Demand <= 4000) {
+					SellDemand =3;
+				}
+				if (Demand > 4000 && Demand <= 5000) {
+					SellDemand =3;
+				}
+				if (Demand > 5000) {
+					SellDemand =3;
+				}
+			}
+			else if (Inventory == 4) {
+				if (Demand > 0 && Demand <= 1000) {
+					SellDemand =1;
+				}
+				if (Demand > 1000 && Demand <= 2000) {
+					SellDemand =2;
+				}
+				if (Demand > 2000 && Demand <= 3000) {
+					SellDemand =3;
+				}
+				if (Demand > 3000 && Demand <= 4000) {
+					SellDemand =4;
+				}
+				if (Demand > 4000 && Demand <= 5000) {
+					SellDemand =4;
+				}
+				if (Demand > 5000) {
+					SellDemand =4;
+				}
+			}
+			else if (Inventory >= 5 && Inventory <= 9) {
+				if (Demand > 0 && Demand <= 1000) {
+					SellDemand =1;
+				}
+				if (Demand > 1000 && Demand <= 2000) {
+					SellDemand =2;
+				}
+				if (Demand > 2000 && Demand <= 3000) {
+					SellDemand =3;
+				}
+				if (Demand > 3000 && Demand <= 4000) {
+					SellDemand =4;
+				}
+				if (Demand > 4000 && Demand <= 5000) {
+					SellDemand =5;
+				}
+				if (Demand > 5000) {
+					SellDemand =5;
+				}
+			}
+			else if (Inventory >= 10) {
+				if (Demand > 0 && Demand <= 1000) {
+					SellDemand =1;
+				}
+				if (Demand > 1000 && Demand <= 2000) {
+					SellDemand =2;
+				}
+				if (Demand > 2000 && Demand <= 3000) {
+					SellDemand =3;
+				}
+				if (Demand > 3000 && Demand <= 4000) {
+					SellDemand =4;
+				}
+				if (Demand > 4000 && Demand <= 5000) {
+					SellDemand =5;
+				}
+				if (Demand > 5000) {
+					SellDemand =10;
+				}
+			}
+			Inventory -= SellDemand;
+			InventorySubbed = SellDemand;
+			Funds += InventorySubbed*Price;
+			InventoryLabel.setText("Unsold Inventory: " + number.format(Inventory));
+			FundsLabel.setText("Available Funds: " + money.format(Funds));
+		}
+		
+	}
+	
 	//If button pressed
+	
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{//Beginning of actionPerformed
@@ -591,76 +869,76 @@ public class Clicker_Game implements ActionListener
 		else if (e.getActionCommand() == Actions.MAKEPENCIL.name())
 		{//Beginning of else if
 			Pencils +=1;
-			Inventory = Pencils;
-	
+			Inventory += 1;
 			PencilLabel.setText("Pencils: " + number.format(Pencils));
 			InventoryLabel.setText("Unsold Inventory: " + number.format(Inventory));
-			
 		}//End of else if
 		else if (e.getActionCommand() == Actions.PRICEDOWN.name())
 		{//Beginning of else if
 		
 		if (Price >=0.01) {
-			Price -= 0.01;
 			
-			DemandShow = Demand*100;
 			
 			if (Price >= 0.01 && Price <=0.05) {
-				Demand += 0.10;
+				Demand += 1000;
 			}
 			else if(Price >= 0.06 && Price <=0.10) {
-				Demand += 0.5;
+				Demand += 500;
 			}
 			else if(Price >= 0.11 && Price <=0.15) {
-				Demand += 0.03;
+				Demand += 300;
 			} 
 			else if(Price >= 0.16 && Price <=0.20) {
-				Demand += 0.02;
+				Demand += 200;
 			} 
 			else if(Price >= 0.21 && Price <=0.25) {
-				Demand += 0.01;
+				Demand += 100;
 			}
 			else if(Price >= 0.26 && Price <=0.30) {
-				Demand += 0.05;
+				Demand += 50;
 			}
-			else if(Price >= 0.31 && Price <=0.40) {
-				Demand += 0.025;
+			else if(Price >= 0.31) {
+				Demand += 25;
 			}
+			Price -= 0.01;
 		}
-		
+		DemandShow = Demand/100;
 		
 		DemandLabel.setText("Public Demand: " + number.format(DemandShow) +"%");
 		PricePerPencilLabel.setText("Price per Pencil: " +money.format(Price));
 		}
 		else if (e.getActionCommand() == Actions.PRICEUP.name())
 		{//Beginning of else if
-			
-		Price += 0.01;
 		
-		DemandShow = Demand*100;
+		if (Demand >=1) {
 		
 		if (Price >= 0.01 && Price <=0.05) {
-			Demand -= 0.10;
+			Demand -= 1000;
 		}
 		else if(Price >= 0.06 && Price <=0.10) {
-			Demand -= 0.5;
+			Demand -= 500;
 		}
 		else if(Price >= 0.11 && Price <=0.15) {
-			Demand -= 0.03;
+			Demand -= 300;
 		} 
 		else if(Price >= 0.16 && Price <=0.20) {
-			Demand -= 0.02;
+			Demand -= 200;
 		} 
 		else if(Price >= 0.21 && Price <=0.25) {
-			Demand -= 0.01;
+			Demand -= 100;
 		}
 		else if(Price >= 0.26 && Price <=0.30) {
-			Demand -= 0.05;
+			Demand -= 50;
 		}
-		else if(Price >= 0.31 && Price <=0.40) {
-			Demand -= 0.025;
+		else if(Price >= 0.31) {
+			Demand -= 25;
 		}
-		System.out.println(DemandShow);
+		else if(Price == 1.44) {
+		}
+		Price += 0.01;
+		}
+		
+		DemandShow = Demand/100;
 		
 		DemandLabel.setText("Public Demand: " + number.format(DemandShow) +"%");
 		PricePerPencilLabel.setText("Price per Pencil: " +money.format(Price));
@@ -670,10 +948,40 @@ public class Clicker_Game implements ActionListener
 		if (Funds >= UpgradeMarketingCost) {
 			MarketingLvl += 1;
 			Funds -= UpgradeMarketingCost;
+			Demand += 200;
+			DemandShow = Demand/100;
 			MarketingLvlLabel.setText("Level: " + number.format(MarketingLvl));
+			DemandLabel.setText("Public Demand: " + number.format(DemandShow) +"%");
 			FundsLabel.setText("Available Funds: " + money.format(Funds));
 		}
+		else if (e.getActionCommand() == Actions.WOOD.name())
+		{
+			if (Funds >= WoodCost) {
+				WoodAmt += 1;
+				Funds -= WoodCost;
+				WoodAmtLabel.setText(number.format(WoodAmt) + " pieces");
+				FundsLabel.setText("Available Funds: " + money.format(Funds));
+			}
+		}	
+		else if (e.getActionCommand() == Actions.LEAD.name())
+		{
+			if (Funds >= LeadCost) {
+				LeadAmt += 1;
+				Funds -= LeadCost;
+				LeadAmtLabel.setText(number.format(LeadAmt) + " rods");
+				FundsLabel.setText("Available Funds: " + money.format(Funds));
+			}
 		}
-	
+			
+		else if (e.getActionCommand() == Actions.ASSEMBLERBUY.name())
+		{
+			if (Funds >= AssemblerCost) {
+				AssemblerAmt += 1;
+				Funds -= AssemblerCost;
+				AutoAssemblerLabel.setText(number.format(AssemblerAmt));
+				FundsLabel.setText("Available Funds: " + money.format(Funds));
+			}
+		}
+		}
 	}//End of actionPerformed
 }//End of Clicker_Game
