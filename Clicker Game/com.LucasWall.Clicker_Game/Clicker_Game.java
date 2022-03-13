@@ -41,6 +41,7 @@ public class Clicker_Game implements ActionListener
 	private static JLabel Inspiration2Label;
 	public static Clicker_Game instance;
 	private static JButton Quit1;
+	public static JButton DeveloperMode;
 	private static JButton Save;
 	private static JButton Load;
 	private static JButton Back;
@@ -83,7 +84,35 @@ public class Clicker_Game implements ActionListener
 	private static JButton AutoAssemblerBuy;
 	private static JLabel AutoAssemblerLabel;
 	private static JLabel AutoAssemblerCostLabel;
+	private static JLabel ComputationalResourcesLabel;
+	private static JSeparator ComputationalResourcesSeparator;
+	private static JLabel TrustLabel;
+	private static JLabel Up1TrustAt;
+	private static JButton ProcessorsButton;
+	private static JLabel ProcessorsLabel;
+	private static JButton MemoryButton;
+	private static JLabel MemoryLabel;
+	private static JLabel OperationsLabel;
+	private static JLabel CreativityLabel;
 	
+	//Projects / Upgrades
+	private static JLabel ProjectsLabel;
+	private static JSeparator ProjectsSeparator;
+	private static JLabel ImprovedAutoAssemblerLabel1;
+	private static JLabel ImprovedAutoAssemblerLabel2;
+	private static JButton ImprovedAutoAssemblersButton;
+	private static JButton ImprovedWoodCuttingButton;
+	private static JLabel ImprovedWoodCuttingLabel1;
+	private static JLabel ImprovedWoodCuttingLabel2;
+	private static JButton ImprovedLeadMoldingButton;
+	private static JLabel ImprovedLeadMoldingLabel1;
+	private static JLabel ImprovedLeadMoldingLabel2;
+	private static JButton RevTrackerButton;
+	private static JLabel RevTrackerLabel1;
+	private static JLabel RevTrackerLabel2;
+	private static JButton CreativityButton;
+	private static JLabel CreativityLabel1;
+	private static JLabel CreativityLabel2;
 	
 	//----Miscelaneous 
 	public static boolean a = false;//Disabling buttons
@@ -114,7 +143,16 @@ public class Clicker_Game implements ActionListener
 	private static double LeadCost = 7;
 	private static double AssemblerAmt = 0;
 	private static double AssemblerCost = 5;
-	
+	private static double Trust = 2;
+	private static double TrustUp = 3000;
+	private static double Processors = 1;
+	private static double Memory = 1;
+	private static double Operations = 0;
+	private static double MaxOperations = 1000;
+	private static double Creativity = 0;
+	private static double OpsNeededImprovedAutoAssemblers = 750;
+	private static double OpsNeededImprovedWoodCutting = 875;
+	private static double OpsNeededImprovedLeadMolding = 875;
 	//------Establishing new colours
 	public static final Color TAX = new Color(158, 182, 222);
 	public static final Color DARK_GREY = new Color(102, 102, 102);
@@ -132,6 +170,7 @@ public class Clicker_Game implements ActionListener
 		SAVE,
 		RETURN,
 		QUIT,
+		DEV,
 		OPTIONS,
 		GUIMODE1,
 		GUIMODE2,
@@ -146,7 +185,9 @@ public class Clicker_Game implements ActionListener
 		MARKETINGUPGRADE,
 		WOOD,
 		LEAD,
-		ASSEMBLERBUY
+		ASSEMBLERBUY,
+		PROCESSORS,
+		MEMORY
 	}//End of Actions
 	
 	public static void Load() {
@@ -221,30 +262,27 @@ public class Clicker_Game implements ActionListener
 		label1.setBounds(350,100,600,450);
 		panel.add(label1);
 		
-		label2 = new JLabel(image2);
-		label2.setBounds(5,65,40,30);
-		panel.add(label2);
-		label2.setVisible(false);
-		
 		WelcomeLabel = new JLabel("");
 		panel.add(WelcomeLabel);
 		WelcomeLabel.setHorizontalAlignment(JLabel.CENTER);
-		WelcomeLabel.setVisible(false);
 		
 		Divider1Label = new JSeparator();
 		Divider1Label.setBounds(0, 40, 1280, 25);
 		panel.add(Divider1Label);
 		Divider1Label.setForeground(BLACK);
-		Divider1Label.setVisible(false);
 
 		Inspiration1Label = new JLabel("This Game was Heavily Inspired by Universal Paperclips:)");
 		Inspiration1Label.setBounds(450,650,400,20);
 		panel.add(Inspiration1Label);
-		Inspiration1Label.setVisible(true);
 		
 		Inspiration2Label = new JLabel("https://www.decisionproblem.com/paperclips/");
 		Inspiration2Label.setBounds(480,670,400,20);
 		panel.add(Inspiration2Label);
+		
+		
+		WelcomeLabel.setVisible(false);
+		Divider1Label.setVisible(false);
+		Inspiration1Label.setVisible(true);
 		Inspiration2Label.setVisible(true);
 		
 		//----------Menu stuff
@@ -253,185 +291,314 @@ public class Clicker_Game implements ActionListener
 		Quit1.setActionCommand(Actions.QUIT.name());
 		Quit1.addActionListener(instance);
 		panel.add(Quit1);
-		Quit1.setVisible(false);
+		
+		DeveloperMode = new JButton("Developer Mode");
+		DeveloperMode.setBounds(100, 10, 180, 25);
+		DeveloperMode.setActionCommand(Actions.DEV.name());
+		DeveloperMode.addActionListener(instance);
+		panel.add(DeveloperMode);
 		
 		Save = new JButton("Save");
 		Save.setBounds(560, 10, 80, 25);
 		Save.setActionCommand(Actions.SAVE.name());
 		Save.addActionListener(instance);
 		panel.add(Save);
-		Save.setVisible(false);
 		
 		Load = new JButton("Load");
 		Load.setBounds(640, 10, 80, 25);
 		Load.setActionCommand(Actions.LOAD.name());
 		Load.addActionListener(instance);
 		panel.add(Load);
-		Load.setVisible(false);
 		
 		Options = new JButton("Options");
 		Options.setBounds(1190, 10, 80, 25);
 		Options.setActionCommand(Actions.OPTIONS.name());
 		Options.addActionListener(instance);
 		panel.add(Options);
-		Options.setVisible(false);
 		
 		Back = new JButton("Back");
 		Back.setBounds(90, 10, 80, 25);
 		Back.setActionCommand(Actions.RETURN.name());
 		Back.addActionListener(instance);
 		panel.add(Back);
+		
+		Quit1.setVisible(false);
+		DeveloperMode.setVisible(false);
+		Save.setVisible(false);
+		Load.setVisible(false);
+		Options.setVisible(false);
 		Back.setVisible(false);
 		
 		//-------------Game stuff
-		
+		//Column 1
 		PencilLabel = new JLabel("Pencils: " + number.format(Pencils));
 		PencilLabel.setBounds(40, 70, 1240, 25);
 		panel.add(PencilLabel);
 		PencilLabel.setFont(new Font("Serif", Font.BOLD, 24));
-		PencilLabel.setVisible(false);
+		
+		label2 = new JLabel(image2);
+		label2.setBounds(5,65,40,30);
+		panel.add(label2);
 		
 		MakePencil = new JButton("Make Pencil");
 		MakePencil.setBounds(10, 110, 120, 25);
 		MakePencil.setActionCommand(Actions.MAKEPENCIL.name());
 		MakePencil.addActionListener(instance);
 		panel.add(MakePencil);
-		MakePencil.setVisible(false);
 		
 		BusinessLabel = new JLabel("Business");
 		BusinessLabel.setBounds(20, 160, 100, 25);
 		panel.add(BusinessLabel);
 		BusinessLabel.setFont(new Font("Serif", Font.BOLD, 18));
-		BusinessLabel.setVisible(false);
 		
 		Business = new JSeparator();
 		Business.setBounds(10, 180, 300, 25);
 		panel.add(Business);
-		Business.setVisible(false);
 		Business.setForeground(BLACK);
 		
 		FundsLabel = new JLabel("Available Funds: " + money.format(Funds));
 		FundsLabel.setBounds(20, 190, 400, 25);
 		panel.add(FundsLabel);
-		FundsLabel.setVisible(false);
 		
 		InventoryLabel = new JLabel("Unsold Inventory: " + number.format(Inventory));
 		InventoryLabel.setBounds(20, 210, 400, 25);
 		panel.add(InventoryLabel);
-		InventoryLabel.setVisible(false);
 		
 		PricePerPencilLabel = new JLabel("Price per Pencil: " +money.format(Price));
 		PricePerPencilLabel.setBounds(80, 230, 400, 25);
 		panel.add(PricePerPencilLabel);
-		PricePerPencilLabel.setVisible(false);
 				
 	    IncreasePrice = new JButton("+");
 	    IncreasePrice.setBounds(40, 230, 40, 25);
 		IncreasePrice.setActionCommand(Actions.PRICEUP.name());
 		IncreasePrice.addActionListener(instance);
 		panel.add(IncreasePrice);
-		IncreasePrice.setVisible(false);
 		
 		DecreasePrice = new JButton("-");
 		DecreasePrice.setBounds(10, 230, 40, 25);
 		DecreasePrice.setActionCommand(Actions.PRICEDOWN.name());
 		DecreasePrice.addActionListener(instance);
 		panel.add(DecreasePrice);
-		DecreasePrice.setVisible(false);
 		
 		DemandLabel = new JLabel("Public Demand: " + number.format(DemandShow) +"%");
 		DemandLabel.setBounds(20, 250, 300, 25);
 		panel.add(DemandLabel);
-		DemandLabel.setVisible(false);
 		
 		MarketingUpgrade = new JButton("Marketing");
 		MarketingUpgrade.setBounds(10, 290, 100, 25);
 		MarketingUpgrade.setActionCommand(Actions.MARKETINGUPGRADE.name());
 		MarketingUpgrade.addActionListener(instance);
 		panel.add(MarketingUpgrade);
-		MarketingUpgrade.setVisible(false);
 		MarketingUpgrade.setEnabled(false);
 		
 		MarketingLvlLabel = new JLabel("Level: " + number.format(MarketingLvl));
 		MarketingLvlLabel.setBounds(110, 290, 100, 25);
 		panel.add(MarketingLvlLabel);
-		MarketingLvlLabel.setVisible(false);
 
 		MarketingUpgradeCost = new JLabel("Cost: " + UpgradeMarketingCost);
 		MarketingUpgradeCost.setBounds(20, 310, 100, 25);
 		panel.add(MarketingUpgradeCost);
-		MarketingUpgradeCost.setVisible(false);
 		
 		ManufacturingLabel = new JLabel("Manufacturing");
 		ManufacturingLabel.setBounds(20, 350, 160, 25);
 		panel.add(ManufacturingLabel);
 		ManufacturingLabel.setFont(new Font("Serif", Font.BOLD, 18));
-		ManufacturingLabel.setVisible(false);
 		
 		ManufacturingSeperator = new JSeparator();
 		ManufacturingSeperator.setBounds(10, 370, 300, 25);
 		panel.add(ManufacturingSeperator);
-		ManufacturingSeperator.setVisible(false);
 		ManufacturingSeperator.setForeground(BLACK);
 		
-		PencilsPerSecond = new JLabel("Pencils per Second: " + number.format(PencilsPerSecondValue));
+		PencilsPerSecond = new JLabel("Pencils per Second: " + seminumber.format(PencilsPerSecondValue));
 		PencilsPerSecond.setBounds(20, 380, 300, 25);
 		panel.add(PencilsPerSecond);
-		PencilsPerSecond.setVisible(false);
 		
 		WoodBuy = new JButton("Wood");
 		WoodBuy.setBounds(10,410,80,25);
 		WoodBuy.setActionCommand(Actions.WOOD.name());
 		WoodBuy.addActionListener(instance);
 		panel.add(WoodBuy);
-		WoodBuy.setVisible(false);
 		WoodBuy.setEnabled(false);
 		
 		WoodAmtLabel = new JLabel(number.format(WoodAmt) + " pieces");
 		WoodAmtLabel.setBounds(90, 410, 300, 25);
 		panel.add(WoodAmtLabel);
-		WoodAmtLabel.setVisible(false);
 		
 		WoodCostLabel = new JLabel("Cost: " + money.format(WoodCost));
 		WoodCostLabel.setBounds(20, 430, 300, 25);
 		panel.add(WoodCostLabel);
-		WoodCostLabel.setVisible(false);
 		
 		LeadBuy = new JButton("Lead");
 		LeadBuy.setBounds(10,470,80,25);
 		LeadBuy.setActionCommand(Actions.LEAD.name());
 		LeadBuy.addActionListener(instance);
 		panel.add(LeadBuy);
-		LeadBuy.setVisible(false);
 		LeadBuy.setEnabled(false);
 		
 		LeadAmtLabel = new JLabel(number.format(LeadAmt) + " rods");
 		LeadAmtLabel.setBounds(90, 470, 300, 25);
 		panel.add(LeadAmtLabel);
-		LeadAmtLabel.setVisible(false);
 		
 		LeadCostLabel = new JLabel("Cost: " + money.format(LeadCost));
 		LeadCostLabel.setBounds(20, 490, 300, 25);
 		panel.add(LeadCostLabel);
-		LeadCostLabel.setVisible(false);
 		
 		AutoAssemblerBuy = new JButton("AutoAssemblers");
 		AutoAssemblerBuy.setBounds(10,530,150,25);
 		AutoAssemblerBuy.setActionCommand(Actions.ASSEMBLERBUY.name());
 		AutoAssemblerBuy.addActionListener(instance);
 		panel.add(AutoAssemblerBuy);
-		AutoAssemblerBuy.setVisible(false);
 		AutoAssemblerBuy.setEnabled(false);
 		
-		AutoAssemblerLabel = new JLabel(seminumber.format(AssemblerAmt));
+		AutoAssemblerLabel = new JLabel(number.format(AssemblerAmt));
 		AutoAssemblerLabel.setBounds(160, 530, 300, 25);
 		panel.add(AutoAssemblerLabel);
-		AutoAssemblerLabel.setVisible(false);
+		
 		
 		AutoAssemblerCostLabel = new JLabel("Cost: " + money.format(AssemblerCost));
 		AutoAssemblerCostLabel.setBounds(20, 550, 300, 25);
 		panel.add(AutoAssemblerCostLabel);
+		
+		PencilLabel.setVisible(false);
+		label2.setVisible(false);
+		MakePencil.setVisible(false);
+		BusinessLabel.setVisible(false);
+		Business.setVisible(false);
+		FundsLabel.setVisible(false);
+		InventoryLabel.setVisible(false);
+		PricePerPencilLabel.setVisible(false);
+		IncreasePrice.setVisible(false);
+		DecreasePrice.setVisible(false);
+		DemandLabel.setVisible(false);
+		MarketingUpgrade.setVisible(false);
+		MarketingLvlLabel.setVisible(false);
+		MarketingUpgradeCost.setVisible(false);
+		ManufacturingLabel.setVisible(false);
+		ManufacturingSeperator.setVisible(false);
+		PencilsPerSecond.setVisible(false);
+		WoodBuy.setVisible(false);
+		WoodAmtLabel.setVisible(false);
+		WoodCostLabel.setVisible(false);
+		LeadBuy.setVisible(false);
+		LeadAmtLabel.setVisible(false);
+		LeadCostLabel.setVisible(false);
+		AutoAssemblerBuy.setVisible(false);
+		AutoAssemblerLabel.setVisible(false);
 		AutoAssemblerCostLabel.setVisible(false);
+		
+		//-----Column 2
+		ComputationalResourcesLabel = new JLabel("Computational Resources");
+		ComputationalResourcesLabel.setBounds(320, 110, 260, 25);
+		panel.add(ComputationalResourcesLabel);
+		ComputationalResourcesLabel.setFont(new Font("Serif", Font.BOLD, 18));
+		
+		ComputationalResourcesSeparator = new JSeparator();
+		ComputationalResourcesSeparator.setBounds(320, 130, 300, 25);
+		panel.add(ComputationalResourcesSeparator);
+		ComputationalResourcesSeparator.setForeground(BLACK);
+		
+		TrustLabel = new JLabel("Trust: " + number.format(Trust));
+		TrustLabel.setBounds(320, 140, 150, 25);
+		panel.add(TrustLabel);
+		
+		Up1TrustAt = new JLabel("+1 Trust at: " + number.format(TrustUp) + " Pencils");
+		Up1TrustAt.setBounds(320, 160, 290, 25);
+		panel.add(Up1TrustAt);
+		
+		ProcessorsButton = new JButton("Processors");
+		ProcessorsButton.setBounds(310, 190, 100, 25);
+		panel.add(ProcessorsButton);
+		
+		ProcessorsLabel = new JLabel(number.format(Processors));
+		ProcessorsLabel.setBounds(420, 190, 100, 25);
+		panel.add(ProcessorsLabel);
+		
+		MemoryButton = new JButton("Memory");
+		MemoryButton.setBounds(310, 220, 100 , 25);
+		panel.add(MemoryButton);
+		
+		MemoryLabel = new JLabel(number.format(Memory));
+		MemoryLabel.setBounds(420, 220, 100, 25);
+		panel.add(MemoryLabel);
+		
+		OperationsLabel = new JLabel("Operations: " + number.format(Operations) + "/" + number.format(MaxOperations));
+		OperationsLabel.setBounds(320, 260, 290, 25);
+		panel.add(OperationsLabel);
+		
+		CreativityLabel = new JLabel("Creativitiy: " + number.format(Creativity));
+		CreativityLabel.setBounds(320, 280, 200, 25);
+		panel.add(CreativityLabel);
+		
+		ProjectsLabel = new JLabel("Projects");
+		ProjectsLabel.setBounds(320, 320, 260, 25);
+		panel.add(ProjectsLabel);
+		ProjectsLabel.setFont(new Font("Serif", Font.BOLD, 18));
+		
+		ProjectsSeparator = new JSeparator();
+		ProjectsSeparator.setBounds(320, 340, 300, 25);
+		panel.add(ProjectsSeparator);
+		ProjectsSeparator.setForeground(BLACK);
+		
+		//Projects
+		ImprovedAutoAssemblerLabel1 = new JLabel("Improved AutoAssemblers (" + number.format(OpsNeededImprovedAutoAssemblers) + " ops)");
+		ImprovedAutoAssemblerLabel1.setBounds(355, 345, 300, 60);
+		panel.add(ImprovedAutoAssemblerLabel1);
+		ImprovedAutoAssemblerLabel1.setFont(new Font("Arial", Font.BOLD, 13));
+		
+		ImprovedAutoAssemblerLabel2 = new JLabel("Increase AutoAssembler performance 25%");
+		ImprovedAutoAssemblerLabel2.setBounds(337, 365, 300, 60);
+		panel.add(ImprovedAutoAssemblerLabel2);
+		
+		ImprovedAutoAssemblersButton = new JButton();
+		ImprovedAutoAssemblersButton.setBounds(320, 350, 300, 70);
+		panel.add(ImprovedAutoAssemblersButton);
+		
+		ImprovedWoodCuttingLabel1 = new JLabel("Improved Wood Cutting (" + number.format(OpsNeededImprovedWoodCutting) + " ops)");
+		ImprovedWoodCuttingLabel1.setBounds(365, 415, 300, 60);
+		panel.add(ImprovedWoodCuttingLabel1);
+		ImprovedWoodCuttingLabel1.setFont(new Font("Arial", Font.BOLD, 13));
+		
+		ImprovedWoodCuttingLabel2 = new JLabel("50% more wood supply after cutting");
+		ImprovedWoodCuttingLabel2.setBounds(355, 435, 300, 60);
+		panel.add(ImprovedWoodCuttingLabel2);
+		
+		ImprovedWoodCuttingButton = new JButton();
+		ImprovedWoodCuttingButton.setBounds(320, 420, 300, 70);
+		panel.add(ImprovedWoodCuttingButton);
+		
+		//private static JButton ImprovedAutoAssemblersButton;
+		//private static JLabel ImprovedAutoAssemblerLabel;
+		//private static JButton ImprovedWoodCuttingButton;
+		//private static JLabel ImprovedWoodCuttingLabel1;
+		//private static JLabel ImprovedWoodCuttingLabel2;
+		//private static JButton ImprovedLeadMoldingButton;
+		//private static JLabel ImprovedLeadMoldingLabel1;
+		//private static JLabel ImprovedLeadMoldingLabel2;
+		//private static JButton RevTrackerButton;
+		//private static JLabel RevTrackerLabel1;
+		//private static JLabel RevTrackerLabel2;
+		//private static JButton CreativityButton;
+		//private static JLabel CreativityLabel1;
+		//private static JLabel CreativityLabel2;
+		
+		ImprovedWoodCuttingLabel1.setVisible(false);
+		ImprovedWoodCuttingLabel2.setVisible(false);
+		ImprovedWoodCuttingButton.setVisible(false);
+		ImprovedAutoAssemblerLabel2.setVisible(false);
+		ImprovedAutoAssemblerLabel1.setVisible(false);
+		ImprovedAutoAssemblersButton.setVisible(false);
+		ComputationalResourcesLabel.setVisible(false);
+		ComputationalResourcesSeparator.setVisible(false);
+		TrustLabel.setVisible(false);
+		Up1TrustAt.setVisible(false);
+		ProcessorsButton.setVisible(false);
+		ProcessorsLabel.setVisible(false);
+		MemoryButton.setVisible(false);
+		MemoryLabel.setVisible(false);
+		OperationsLabel.setVisible(false);
+		CreativityLabel.setVisible(false);
+		ProjectsLabel.setVisible(false);
+		ProjectsSeparator.setVisible(false);
 		
 		//-------Options Window
 		GUImodeLabel = new JLabel("Window Size: ");
@@ -508,7 +675,7 @@ public class Clicker_Game implements ActionListener
 	}
 	public static void Modes() {
 		Timer timer = new Timer();
-		timer.schedule(new Timer_Sell(), 0, 5000);
+		timer.schedule(new Timer_Sell(), 0, 1000);
 	}
 	public static void Game() {
 		//Hides Load - Specific Elements
@@ -524,6 +691,7 @@ public class Clicker_Game implements ActionListener
 		Load.setVisible(true);
 		Options.setVisible(true);
 		Quit1.setVisible(true);
+		DeveloperMode.setVisible(true);
 		
 		PencilLabel.setVisible(true);
 		MakePencil.setVisible(true);
@@ -547,9 +715,6 @@ public class Clicker_Game implements ActionListener
 		LeadBuy.setVisible(true);
 		LeadAmtLabel.setVisible(true);
 		LeadCostLabel.setVisible(true);
-		AutoAssemblerBuy.setVisible(true);
-		AutoAssemblerLabel.setVisible(true);
-		AutoAssemblerCostLabel.setVisible(true);
 	}
 	
 	public static void main(String[] args) 
@@ -573,6 +738,36 @@ public class Clicker_Game implements ActionListener
 				e.printStackTrace();
 			}//End of catch
 			DemandShow = Demand/100;
+			
+			if(Pencils >= 50) {
+				if(PencilLabel.isVisible()) {
+				AutoAssemblerBuy.setVisible(true);
+				AutoAssemblerLabel.setVisible(true);
+				AutoAssemblerCostLabel.setVisible(true);
+				}
+			}
+			if(Pencils >= 2000) {
+				if(PencilLabel.isVisible()) {
+				ComputationalResourcesLabel.setVisible(true);
+				ComputationalResourcesSeparator.setVisible(true);
+				TrustLabel.setVisible(true);
+				Up1TrustAt.setVisible(true);
+				ProcessorsButton.setVisible(true);
+				ProcessorsLabel.setVisible(true);
+				MemoryButton.setVisible(true);
+				MemoryLabel.setVisible(true);
+				OperationsLabel.setVisible(true);
+				CreativityLabel.setVisible(true);
+				ProjectsLabel.setVisible(true);
+				ProjectsSeparator.setVisible(true);
+				ImprovedAutoAssemblerLabel1.setVisible(true);
+				ImprovedAutoAssemblerLabel2.setVisible(true);
+				ImprovedAutoAssemblersButton.setVisible(true);
+				ImprovedWoodCuttingLabel1.setVisible(true);
+				ImprovedWoodCuttingLabel2.setVisible(true);
+				ImprovedWoodCuttingButton.setVisible(true);
+				}
+			}
 			if(WoodAmt >= 2 && LeadAmt >= 1) {
 				MakePencil.setEnabled(true);
 			}
@@ -638,6 +833,7 @@ public class Clicker_Game implements ActionListener
 		Options.setVisible(false);
 		Back.setVisible(true);
 		
+		DeveloperMode.setVisible(false);
 		PencilLabel.setVisible(false);
 		MakePencil.setVisible(false);
 		BusinessLabel.setVisible(false);
@@ -664,7 +860,28 @@ public class Clicker_Game implements ActionListener
 		AutoAssemblerBuy.setVisible(false);
 		AutoAssemblerLabel.setVisible(false);
 		AutoAssemblerCostLabel.setVisible(false);
+		ImprovedWoodCuttingLabel1.setVisible(false);
+		ImprovedWoodCuttingLabel2.setVisible(false);
+		ImprovedWoodCuttingButton.setVisible(false);
 		
+		//Column 2
+		ComputationalResourcesLabel.setVisible(false);
+		ComputationalResourcesSeparator.setVisible(false);
+		TrustLabel.setVisible(false);
+		Up1TrustAt.setVisible(false);
+		ProcessorsButton.setVisible(false);
+		ProcessorsLabel.setVisible(false);
+		MemoryButton.setVisible(false);
+		MemoryLabel.setVisible(false);
+		OperationsLabel.setVisible(false);
+		CreativityLabel.setVisible(false);
+		ProjectsLabel.setVisible(false);
+		ProjectsSeparator.setVisible(false);
+		ImprovedAutoAssemblersButton.setVisible(false);
+		ImprovedAutoAssemblerLabel1.setVisible(false);
+		ImprovedAutoAssemblerLabel2.setVisible(false);
+		
+		//Options Pane
 		GUImodeLabel.setVisible(true);
 		GUImode1Label.setVisible(true);
 		GUImode2Label.setVisible(true);
@@ -680,7 +897,7 @@ public class Clicker_Game implements ActionListener
 		//Sells every segment of time and  keeps from going negative
 		if (WoodAmt >= AssemblerAmt && LeadAmt >= AssemblerAmt) {
 			if (AssemblerAmt >= 1) {
-			Pencils += AssemblerAmt;
+			Pencils += -1*(AssemblerAmt-(SellDemand+AssemblerAmt));
 			Inventory += AssemblerAmt;
 			WoodAmt -= AssemblerAmt*2;
 			LeadAmt -= AssemblerAmt;
@@ -690,7 +907,7 @@ public class Clicker_Game implements ActionListener
 		//Sells remaining few 
 		else if(WoodAmt < AssemblerAmt || LeadAmt < AssemblerAmt) {
 			if (AssemblerAmt >= 1 && d == true) {	
-			Pencils += WoodAmt/2;
+			Pencils += (AssemblerAmt - SellDemand);
 			Inventory += WoodAmt/2;
 			WoodAmt -= WoodAmt;
 			LeadAmt -= LeadAmt;
@@ -698,6 +915,7 @@ public class Clicker_Game implements ActionListener
 			d = false;
 			}
 		}
+		
 		if(Inventory ==  0) {
 		}
 		else if(Inventory > 0) {
@@ -878,7 +1096,13 @@ public class Clicker_Game implements ActionListener
 		{//Beginning of else if
 			frame.dispose();
 		}//End of else if
-		
+		else if (e.getActionCommand() == Actions.DEV.name())
+		{//Beginning of else if
+			Funds = 1000000;
+			Pencils = 100000;
+			PencilLabel.setText("Pencils: " + number.format(Pencils));
+			FundsLabel.setText("Available Funds: " + money.format(Funds));
+		}//End of else if
 		//Go back to top
 		else if (e.getActionCommand() == Actions.OPTIONS.name())
 		{//Beginning of else if
@@ -1033,9 +1257,17 @@ public class Clicker_Game implements ActionListener
 			Funds -= AssemblerCost;
 			AutoAssemblerLabel.setText(number.format(AssemblerAmt));
 			FundsLabel.setText("Available Funds: " + money.format(Funds));
-			PencilsPerSecondValue = AssemblerAmt/5;
+			PencilsPerSecondValue = AssemblerAmt;
 			PencilsPerSecond.setText("Pencils per Second: " + seminumber.format(PencilsPerSecondValue));
 		}
 		}
+		else if (e.getActionCommand() == Actions.PROCESSORS.name())
+		{//Beginning of else if
+			
+		}//End of else if
+		else if (e.getActionCommand() == Actions.MEMORY.name())
+		{//Beginning of else if
+			
+		}//End of else if
 	}//End of actionPerformed
 }//End of Clicker_Game
