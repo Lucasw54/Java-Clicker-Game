@@ -9,8 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +16,7 @@ import java.text.DecimalFormat;
 import java.util.Timer;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,27 +24,29 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JSeparator;
+import javax.swing.border.Border;
 
 public class Clicker_Game implements ActionListener
 {//Beginning of Clicker_Game
 	//Global Objects
 	
 	//------Random GUI Globals
-	private static JPanel panel;
-	private static JFrame frame;
-	private static JLabel WelcomeLabel;
-	private static JLabel label1;
-	private static JLabel label2;
-	private static JSeparator Divider1Label;
-	private static JLabel Inspiration1Label;
-	private static JLabel Inspiration2Label;
+	public static JPanel panel;
+	public static JFrame frame;
+	public static JLabel WelcomeLabel;
+	public static JLabel label1;
+	public static JLabel label2;
+	public static JSeparator Divider1Label;
+	public static JLabel Inspiration1Label;
+	public static JLabel Inspiration2Label;
 	public static Clicker_Game instance;
-	private static JButton Quit1;
+	public static JButton Quit1;
+	public static JLabel DeveloperModeLabel;
 	public static JButton DeveloperMode;
-	private static JButton Save;
-	private static JButton Load;
-	private static JButton Back;
-	private static JButton Options;
+	public static JButton Save;
+	public static JButton Load;
+	public static JButton Back;
+	public static JButton Options;
 	public static JProgressBar bar = new JProgressBar();
 	public static int counter = 0;
 	public static boolean load = false;
@@ -60,59 +61,111 @@ public class Clicker_Game implements ActionListener
 	
 	//Gui - Game Globals
 	public static JButton MakePencil;
-	private static JLabel PencilLabel;
-	private static JLabel BusinessLabel;
-	private static JSeparator Business;
-	private static JLabel FundsLabel;
-	private static JLabel InventoryLabel;
-	private static JButton IncreasePrice;
-	private static JButton DecreasePrice;
-	private static JLabel PricePerPencilLabel;
-	private static JLabel DemandLabel;
-	private static JButton MarketingUpgrade;
-	private static JLabel MarketingLvlLabel;
-	private static JLabel MarketingUpgradeCost;
-	private static JLabel ManufacturingLabel;
-	private static JSeparator ManufacturingSeperator;
-	private static JLabel PencilsPerSecond;
-	private static JButton WoodBuy;
-	private static JLabel WoodAmtLabel;
-	private static JLabel WoodCostLabel;
-	private static JButton LeadBuy;
-	private static JLabel LeadAmtLabel;
-	private static JLabel LeadCostLabel;
-	private static JButton AutoAssemblerBuy;
-	private static JLabel AutoAssemblerLabel;
-	private static JLabel AutoAssemblerCostLabel;
-	private static JLabel ComputationalResourcesLabel;
-	private static JSeparator ComputationalResourcesSeparator;
-	private static JLabel TrustLabel;
-	private static JLabel Up1TrustAt;
-	private static JButton ProcessorsButton;
-	private static JLabel ProcessorsLabel;
-	private static JButton MemoryButton;
-	private static JLabel MemoryLabel;
-	private static JLabel OperationsLabel;
-	private static JLabel CreativityLabel;
+	public static JLabel PencilLabel;
+	public static JLabel BusinessLabel;
+	public static JSeparator Business;
+	public static JLabel FundsLabel;
+	public static JLabel InventoryLabel;
+	public static JButton IncreasePrice;
+	public static JButton DecreasePrice;
+	public static JLabel PricePerPencilLabel;
+	public static JLabel DemandLabel;
+	public static JButton MarketingUpgrade;
+	public static JLabel MarketingLvlLabel;
+	public static JLabel MarketingUpgradeCost;
+	public static JLabel ManufacturingLabel;
+	public static JSeparator ManufacturingSeperator;
+	public static JLabel PencilsPerSecond;
+	public static JButton WoodBuy;
+	public static JLabel WoodAmtLabel;
+	public static JLabel WoodCostLabel;
+	public static JButton LeadBuy;
+	public static JLabel LeadAmtLabel;
+	public static JLabel LeadCostLabel;
+	public static JButton AutoAssemblerBuy;
+	public static JLabel AutoAssemblerLabel;
+	public static JLabel AutoAssemblerCostLabel;
+	public static JLabel ComputationalResourcesLabel;
+	public static JSeparator ComputationalResourcesSeparator;
+	public static JLabel TrustLabel;
+	public static JLabel Up1TrustAt;
+	public static JButton ProcessorsButton;
+	public static JLabel ProcessorsLabel;
+	public static JButton MemoryButton;
+	public static JLabel MemoryLabel;
+	public static JLabel OperationsLabel;
+	public static JLabel CreativityLabel;
 	
 	//Projects / Upgrades
-	private static JLabel ProjectsLabel;
-	private static JSeparator ProjectsSeparator;
-	private static JLabel ImprovedAutoAssemblerLabel1;
-	private static JLabel ImprovedAutoAssemblerLabel2;
-	private static JButton ImprovedAutoAssemblersButton;
-	private static JButton ImprovedWoodCuttingButton;
-	private static JLabel ImprovedWoodCuttingLabel1;
-	private static JLabel ImprovedWoodCuttingLabel2;
-	private static JButton ImprovedLeadMoldingButton;
-	private static JLabel ImprovedLeadMoldingLabel1;
-	private static JLabel ImprovedLeadMoldingLabel2;
-	private static JButton RevTrackerButton;
-	private static JLabel RevTrackerLabel1;
-	private static JLabel RevTrackerLabel2;
-	private static JButton CreativityButton;
-	private static JLabel CreativityLabel1;
-	private static JLabel CreativityLabel2;
+	public static JLabel ProjectsLabel;
+	public static JSeparator ProjectsSeparator;
+	public static JLabel ImprovedAutoAssemblerLabel1;
+	public static JLabel ImprovedAutoAssemblerLabel2;
+	public static JButton ImprovedAutoAssemblersButton;
+	public static JButton ImprovedWoodCuttingButton;
+	public static JLabel ImprovedWoodCuttingLabel1;
+	public static JLabel ImprovedWoodCuttingLabel2;
+	public static JButton ImprovedLeadMoldingButton;
+	public static JLabel ImprovedLeadMoldingLabel1;
+	public static JLabel ImprovedLeadMoldingLabel2;
+	public static JButton RevTrackerButton;
+	public static JLabel RevTrackerLabel1;
+	public static JLabel RevTrackerLabel2;
+	public static JButton CreativityButton;
+	public static JLabel CreativityLabel1;
+	public static JLabel CreativityLabel2;
+	
+	//------Achievements
+	public static JButton Achievements;
+	public static JLabel AchievementsLabel;
+	public static JSeparator AchievementsSeparator;
+	public static JLabel AchievementsNotice;
+	//Pencil Amounts
+	public static JLabel PencilAchievements;
+	public static JLabel PencilAchieve1;
+	public static JLabel PencilAchieve1Image;
+	public static JLabel PencilAchieve2;
+	public static JLabel PencilAchieve2Image2;
+	public static JLabel PencilAchieve3;
+	public static JLabel PencilAchieve3Image;
+	public static JLabel PencilAchieve4;
+	public static JLabel PencilAchieve4Image;
+	public static JLabel PencilAchieve5;
+	public static JLabel PencilAchieve5Image;
+	public static JLabel PencilAchieve6;
+	public static JLabel PencilAchieve6Image;
+	public static JLabel PencilAchieve7;
+	public static JLabel PencilAchieve7Image;
+	public static JLabel PencilAchieve8;
+	public static JLabel PencilAchieve8Image;
+	
+	//AutoAssembler Amounts
+	public static JLabel AutoAssemblerAchievements;
+	public static JLabel AutoAssemblerAchieve1;
+	public static JLabel AutoAssemblerAchieve1Image;
+	public static JLabel AutoAssemblerAchieve2;
+	public static JLabel AutoAssemblerAchieve2Image;
+	public static JLabel AutoAssemblerAchieve3;
+	public static JLabel AutoAssemblerAchieve3Image;
+
+	//Materials Used
+	public static JLabel MaterialsDepletedAchievements;
+	public static JLabel MaterialsDepletedAchieve1;
+	public static JLabel MaterialsDepletedAchieve1Image;
+	public static JLabel MaterialsDepletedAchieve2;
+	public static JLabel MaterialsDepletedAchieve2Image;
+	public static JLabel MaterialsDepletedAchieve3;
+	public static JLabel MaterialsDepletedAchieve3Image;
+	public static JLabel MaterialsDepletedAchieve4;
+	public static JLabel MaterialsDepletedAchieve4Image;
+	public static JLabel MaterialsDepletedAchieve5;
+	public static JLabel MaterialsDepletedAchieve5Image;
+	public static JLabel MaterialsDepletedAchieve6;
+	public static JLabel MaterialsDepletedAchieve6Image;
+	public static JLabel MaterialsDepletedAchieve7;
+	public static JLabel MaterialsDepletedAchieve7Image;
+	public static JLabel MaterialsDepletedAchieve8;
+	public static JLabel MaterialsDepletedAchieve8Image;
 	
 	//----Miscelaneous 
 	public static boolean a = false;//Disabling buttons
@@ -131,38 +184,48 @@ public class Clicker_Game implements ActionListener
 	public static double Funds = 0;
 	public static double Inventory = 0;
 	public static double Price = 0.25;
+	public static double MaterialsDepleted = 0;
 	public static int Demand = 3200; 
 	public static double DemandShow = Demand/100;
 	public static double MarketingLvl = 1;
 	public static double UpgradeMarketingCost = 100;
-	private static double InventorySubbed;
-	private static double PencilsPerSecondValue;
-	private static double WoodAmt = 1000;
-	private static double LeadAmt = 500;
-	private static double WoodCost = 5;
-	private static double LeadCost = 7;
-	private static double AssemblerAmt = 0;
-	private static double AssemblerCost = 5;
-	private static double Trust = 2;
-	private static double TrustUp = 3000;
-	private static double Processors = 1;
-	private static double Memory = 1;
-	private static double Operations = 0;
-	private static double MaxOperations = 1000;
-	private static double Creativity = 0;
-	private static double OpsNeededImprovedAutoAssemblers = 750;
-	private static double OpsNeededImprovedWoodCutting = 875;
-	private static double OpsNeededImprovedLeadMolding = 875;
+	public static double InventorySubbed;
+	public static double PencilsPerSecondValue;
+	public static double WoodAmt = 1000;
+	public static double LeadAmt = 500;
+	public static double WoodCost = 5;
+	public static double LeadCost = 7;
+	public static double AssemblerAmt = 0;
+	public static double AssemblerCost = 5;
+	public static double Trust = 2;
+	public static double TrustUp = 3000;
+	public static double Processors = 1;
+	public static double Memory = 1;
+	public static double Operations = 0;
+	public static double MaxOperations = 1000;
+	public static double Creativity = 0;
+	public static double OpsNeededImprovedAutoAssemblers = 750;
+	public static double OpsNeededImprovedWoodCutting = 875;
+	public static double OpsNeededImprovedLeadMolding = 875;
+	public static double WoodNeeded = 2;
+	public static double LeadNeeded = 1;
+	
 	//------Establishing new colours
 	public static final Color TAX = new Color(158, 182, 222);
 	public static final Color DARK_GREY = new Color(102, 102, 102);
 	public static final Color NEWBlUE = new Color(201, 222, 242);
 	public static final Color BLACK = new Color(1, 2, 2);
+	public static final Color GREEN = new Color(75,181,67);
+	public static final Color DARKBLUE = new Color(70, 88, 250);
 	
 	//------Decimal Format
-	static DecimalFormat money = new DecimalFormat("$###,###,##0.00");
-	static DecimalFormat number = new DecimalFormat("###,###,###");
-	static DecimalFormat seminumber = new DecimalFormat("###,###,##0.00");
+	public static DecimalFormat money = new DecimalFormat("$###,###,##0.00");
+	public static DecimalFormat number = new DecimalFormat("###,###,###");
+	public static DecimalFormat seminumber = new DecimalFormat("###,###,##0.00");
+	
+	//------New Borders
+	public static Border border1 = BorderFactory.createRaisedBevelBorder();
+	public static Border border2 = BorderFactory.createLoweredBevelBorder();
 	
 	public enum Actions
 	{//Beginning of Actions
@@ -170,6 +233,7 @@ public class Clicker_Game implements ActionListener
 		SAVE,
 		RETURN,
 		QUIT,
+		ACHIEVEMENTS,
 		DEV,
 		OPTIONS,
 		GUIMODE1,
@@ -293,10 +357,16 @@ public class Clicker_Game implements ActionListener
 		panel.add(Quit1);
 		
 		DeveloperMode = new JButton("Developer Mode");
-		DeveloperMode.setBounds(100, 10, 180, 25);
+		DeveloperMode.setBounds(1000, 10, 150, 25);
 		DeveloperMode.setActionCommand(Actions.DEV.name());
 		DeveloperMode.addActionListener(instance);
 		panel.add(DeveloperMode);
+		
+		Achievements = new JButton("Achievements");
+		Achievements.setBounds(100, 10, 150, 25);
+		Achievements.setActionCommand(Actions.ACHIEVEMENTS.name());
+		Achievements.addActionListener(instance);
+		panel.add(Achievements);
 		
 		Save = new JButton("Save");
 		Save.setBounds(560, 10, 80, 25);
@@ -322,6 +392,7 @@ public class Clicker_Game implements ActionListener
 		Back.addActionListener(instance);
 		panel.add(Back);
 		
+		Achievements.setVisible(false);
 		Quit1.setVisible(false);
 		DeveloperMode.setVisible(false);
 		Save.setVisible(false);
@@ -454,7 +525,6 @@ public class Clicker_Game implements ActionListener
 		AutoAssemblerLabel.setBounds(160, 530, 300, 25);
 		panel.add(AutoAssemblerLabel);
 		
-		
 		AutoAssemblerCostLabel = new JLabel("Cost: " + money.format(AssemblerCost));
 		AutoAssemblerCostLabel.setBounds(20, 550, 300, 25);
 		panel.add(AutoAssemblerCostLabel);
@@ -566,20 +636,20 @@ public class Clicker_Game implements ActionListener
 		ImprovedWoodCuttingButton.setBounds(320, 420, 300, 70);
 		panel.add(ImprovedWoodCuttingButton);
 		
-		//private static JButton ImprovedAutoAssemblersButton;
-		//private static JLabel ImprovedAutoAssemblerLabel;
-		//private static JButton ImprovedWoodCuttingButton;
-		//private static JLabel ImprovedWoodCuttingLabel1;
-		//private static JLabel ImprovedWoodCuttingLabel2;
-		//private static JButton ImprovedLeadMoldingButton;
-		//private static JLabel ImprovedLeadMoldingLabel1;
-		//private static JLabel ImprovedLeadMoldingLabel2;
-		//private static JButton RevTrackerButton;
-		//private static JLabel RevTrackerLabel1;
-		//private static JLabel RevTrackerLabel2;
-		//private static JButton CreativityButton;
-		//private static JLabel CreativityLabel1;
-		//private static JLabel CreativityLabel2;
+		//public static JButton ImprovedAutoAssemblersButton;
+		//public static JLabel ImprovedAutoAssemblerLabel;
+		//public static JButton ImprovedWoodCuttingButton;
+		//public static JLabel ImprovedWoodCuttingLabel1;
+		//public static JLabel ImprovedWoodCuttingLabel2;
+		//public static JButton ImprovedLeadMoldingButton;
+		//public static JLabel ImprovedLeadMoldingLabel1;
+		//public static JLabel ImprovedLeadMoldingLabel2;
+		//public static JButton RevTrackerButton;
+		//public static JLabel RevTrackerLabel1;
+		//public static JLabel RevTrackerLabel2;
+		//public static JButton CreativityButton;
+		//public static JLabel CreativityLabel1;
+		//public static JLabel CreativityLabel2;
 		
 		ImprovedWoodCuttingLabel1.setVisible(false);
 		ImprovedWoodCuttingLabel2.setVisible(false);
@@ -600,7 +670,147 @@ public class Clicker_Game implements ActionListener
 		ProjectsLabel.setVisible(false);
 		ProjectsSeparator.setVisible(false);
 		
-		//-------Options Window
+		//--------Achievements Pane
+		
+		AchievementsLabel = new JLabel("Achievements");
+		AchievementsLabel.setBounds(60,80,200,20);
+		panel.add(AchievementsLabel);
+		AchievementsLabel.setVisible(false);
+		AchievementsLabel.setFont(new Font("Serif", Font.PLAIN, 24));
+		
+		AchievementsSeparator = new JSeparator();
+		AchievementsSeparator.setBounds(40, 100, 300, 25);
+		panel.add(AchievementsSeparator);
+		AchievementsSeparator.setForeground(BLACK);
+		
+		PencilAchievements = new JLabel("Total Pencils Sold:");
+		PencilAchievements.setBounds(50, 130, 200, 25);
+		panel.add(PencilAchievements);
+		PencilAchievements.setFont(new Font("Serif", Font.PLAIN, 18));
+		
+		PencilAchieve1 = new JLabel("100");
+		PencilAchieve1.setBounds(50, 170, 60, 25);
+		panel.add(PencilAchieve1);
+		PencilAchieve1.setBorder(border1);
+		PencilAchieve1.setHorizontalAlignment(JLabel.CENTER);
+		
+		PencilAchieve2 = new JLabel("500");
+		PencilAchieve2.setBounds(120, 170, 60, 25);
+		panel.add(PencilAchieve2);
+		PencilAchieve2.setBorder(border1);
+		PencilAchieve2.setHorizontalAlignment(JLabel.CENTER);
+		
+		PencilAchieve3 = new JLabel("1000");
+		PencilAchieve3.setBounds(190, 170, 60, 25);
+		panel.add(PencilAchieve3);
+		PencilAchieve3.setBorder(border1);
+		PencilAchieve3.setHorizontalAlignment(JLabel.CENTER);
+		
+		PencilAchieve4 = new JLabel("2500");
+		PencilAchieve4.setBounds(260, 170, 60, 25);
+		panel.add(PencilAchieve4);
+		PencilAchieve4.setBorder(border1);
+		PencilAchieve4.setHorizontalAlignment(JLabel.CENTER);
+		
+		PencilAchieve5 = new JLabel("5000");
+		PencilAchieve5.setBounds(50, 200, 60, 25);
+		panel.add(PencilAchieve5);
+		PencilAchieve5.setBorder(border1);
+		PencilAchieve5.setHorizontalAlignment(JLabel.CENTER);
+		
+		PencilAchieve6 = new JLabel("10000");
+		PencilAchieve6.setBounds(120, 200, 60, 25);
+		panel.add(PencilAchieve6);
+		PencilAchieve6.setBorder(border1);
+		PencilAchieve6.setHorizontalAlignment(JLabel.CENTER);
+		
+		PencilAchieve7 = new JLabel("100000");
+		PencilAchieve7.setBounds(190, 200, 60, 25);
+		panel.add(PencilAchieve7);
+		PencilAchieve7.setBorder(border1);
+		PencilAchieve7.setHorizontalAlignment(JLabel.CENTER);
+		
+		PencilAchieve8 = new JLabel("1000000");
+		PencilAchieve8.setBounds(260, 200, 60, 25);
+		panel.add(PencilAchieve8);
+		PencilAchieve8.setBorder(border1);
+		PencilAchieve8.setHorizontalAlignment(JLabel.CENTER);
+		
+		MaterialsDepletedAchievements = new JLabel("Materials Depleted:");
+		MaterialsDepletedAchievements.setBounds(400, 130, 200, 25);
+		panel.add(MaterialsDepletedAchievements);
+		MaterialsDepletedAchievements.setFont(new Font("Serif", Font.PLAIN, 18));
+		
+		MaterialsDepletedAchieve1 = new JLabel("1000");
+		MaterialsDepletedAchieve1.setBounds(400, 170, 60, 25);
+		panel.add(MaterialsDepletedAchieve1);
+		MaterialsDepletedAchieve1.setBorder(border1);
+		MaterialsDepletedAchieve1.setHorizontalAlignment(JLabel.CENTER);
+		
+		MaterialsDepletedAchieve2 = new JLabel("2500");
+		MaterialsDepletedAchieve2.setBounds(470, 170, 60, 25);
+		panel.add(MaterialsDepletedAchieve2);
+		MaterialsDepletedAchieve2.setBorder(border1);
+		MaterialsDepletedAchieve2.setHorizontalAlignment(JLabel.CENTER);
+		
+		MaterialsDepletedAchieve3 = new JLabel("5000");
+		MaterialsDepletedAchieve3.setBounds(540, 170, 60, 25);
+		panel.add(MaterialsDepletedAchieve3);
+		MaterialsDepletedAchieve3.setBorder(border1);
+		MaterialsDepletedAchieve3.setHorizontalAlignment(JLabel.CENTER);
+		
+		MaterialsDepletedAchieve4 = new JLabel("10000");
+		MaterialsDepletedAchieve4.setBounds(610, 170, 60, 25);
+		panel.add(MaterialsDepletedAchieve4);
+		MaterialsDepletedAchieve4.setBorder(border1);
+		MaterialsDepletedAchieve4.setHorizontalAlignment(JLabel.CENTER);
+		
+		MaterialsDepletedAchieve5 = new JLabel("50000");
+		MaterialsDepletedAchieve5.setBounds(400, 200, 60, 25);
+		panel.add(MaterialsDepletedAchieve5);
+		MaterialsDepletedAchieve5.setBorder(border1);
+		MaterialsDepletedAchieve5.setHorizontalAlignment(JLabel.CENTER);
+		
+		MaterialsDepletedAchieve6 = new JLabel("100000");
+		MaterialsDepletedAchieve6.setBounds(470, 200, 60, 25);
+		panel.add(MaterialsDepletedAchieve6);
+		MaterialsDepletedAchieve6.setBorder(border1);
+		MaterialsDepletedAchieve6.setHorizontalAlignment(JLabel.CENTER);
+		
+		MaterialsDepletedAchieve7 = new JLabel("500000");
+		MaterialsDepletedAchieve7.setBounds(540, 200, 60, 25);
+		panel.add(MaterialsDepletedAchieve7);
+		MaterialsDepletedAchieve7.setBorder(border1);
+		MaterialsDepletedAchieve7.setHorizontalAlignment(JLabel.CENTER);
+		
+		MaterialsDepletedAchieve8 = new JLabel("1000000");
+		MaterialsDepletedAchieve8.setBounds(610, 200, 60, 25);
+		panel.add(MaterialsDepletedAchieve8);
+		MaterialsDepletedAchieve8.setBorder(border1);
+		MaterialsDepletedAchieve8.setHorizontalAlignment(JLabel.CENTER);
+		
+		MaterialsDepletedAchieve1.setVisible(false);
+		MaterialsDepletedAchieve2.setVisible(false);
+		MaterialsDepletedAchieve3.setVisible(false);
+		MaterialsDepletedAchieve4.setVisible(false);
+		MaterialsDepletedAchieve5.setVisible(false);
+		MaterialsDepletedAchieve6.setVisible(false);
+		MaterialsDepletedAchieve7.setVisible(false);
+		MaterialsDepletedAchieve8.setVisible(false);
+		MaterialsDepletedAchievements.setVisible(false);
+		PencilAchieve1.setVisible(false);
+		PencilAchieve2.setVisible(false);
+		PencilAchieve3.setVisible(false);
+		PencilAchieve4.setVisible(false);
+		PencilAchieve5.setVisible(false);
+		PencilAchieve6.setVisible(false);
+		PencilAchieve7.setVisible(false);
+		PencilAchieve8.setVisible(false);
+		PencilAchievements.setVisible(false);
+		AchievementsSeparator.setVisible(false);
+		AchievementsLabel.setVisible(false);
+		
+		//-------Options Pane
 		GUImodeLabel = new JLabel("Window Size: ");
 		GUImodeLabel.setBounds(30,100,200,20);
 		panel.add(GUImodeLabel);
@@ -692,7 +902,7 @@ public class Clicker_Game implements ActionListener
 		Options.setVisible(true);
 		Quit1.setVisible(true);
 		DeveloperMode.setVisible(true);
-		
+		Achievements.setVisible(true);
 		PencilLabel.setVisible(true);
 		MakePencil.setVisible(true);
 		BusinessLabel.setVisible(true);
@@ -715,8 +925,213 @@ public class Clicker_Game implements ActionListener
 		LeadBuy.setVisible(true);
 		LeadAmtLabel.setVisible(true);
 		LeadCostLabel.setVisible(true);
+		
+		//Hides Achievements
+		PencilAchievements.setVisible(false);
+		PencilAchieve1.setVisible(false);
+		PencilAchieve2.setVisible(false);
+		PencilAchieve3.setVisible(false);
+		PencilAchieve4.setVisible(false);
+		PencilAchieve5.setVisible(false);
+		PencilAchieve6.setVisible(false);
+		PencilAchieve7.setVisible(false);
+		PencilAchieve8.setVisible(false);
+		AchievementsSeparator.setVisible(false);
+		AchievementsLabel.setVisible(false);
+		MaterialsDepletedAchieve1.setVisible(false);
+		MaterialsDepletedAchieve2.setVisible(false);
+		MaterialsDepletedAchieve3.setVisible(false);
+		MaterialsDepletedAchieve4.setVisible(false);
+		MaterialsDepletedAchieve5.setVisible(false);
+		MaterialsDepletedAchieve6.setVisible(false);
+		MaterialsDepletedAchieve7.setVisible(false);
+		MaterialsDepletedAchieve8.setVisible(false);
+		MaterialsDepletedAchievements.setVisible(false);
+	}
+	//--------------Achievements Pane
+	public static void achievements() {
+		//Menu Bar
+		Save.setVisible(false);
+		Load.setVisible(false);
+		Options.setVisible(true);
+		Back.setVisible(true);
+		Achievements.setVisible(false);
+		
+		//Column 1
+		DeveloperMode.setVisible(false);
+		PencilLabel.setVisible(false);
+		MakePencil.setVisible(false);
+		BusinessLabel.setVisible(false);
+		Business.setVisible(false);
+		FundsLabel.setVisible(false);
+		InventoryLabel.setVisible(false);
+		PricePerPencilLabel.setVisible(false);
+		IncreasePrice.setVisible(false);
+		DecreasePrice.setVisible(false);
+		DemandLabel.setVisible(false);
+		MarketingUpgrade.setVisible(false);
+		MarketingLvlLabel.setVisible(false);
+		MarketingUpgradeCost.setVisible(false);
+		label2.setVisible(false);
+		ManufacturingLabel.setVisible(false);
+		ManufacturingSeperator.setVisible(false);
+		PencilsPerSecond.setVisible(false);
+		WoodBuy.setVisible(false);
+		WoodAmtLabel.setVisible(false);
+		WoodCostLabel.setVisible(false);
+		LeadBuy.setVisible(false);
+		LeadAmtLabel.setVisible(false);
+		LeadCostLabel.setVisible(false);
+		AutoAssemblerBuy.setVisible(false);
+		AutoAssemblerLabel.setVisible(false);
+		AutoAssemblerCostLabel.setVisible(false);
+		ImprovedWoodCuttingLabel1.setVisible(false);
+		ImprovedWoodCuttingLabel2.setVisible(false);
+		ImprovedWoodCuttingButton.setVisible(false);
+		
+		//Column 2
+		ComputationalResourcesLabel.setVisible(false);
+		ComputationalResourcesSeparator.setVisible(false);
+		TrustLabel.setVisible(false);
+		Up1TrustAt.setVisible(false);
+		ProcessorsButton.setVisible(false);
+		ProcessorsLabel.setVisible(false);
+		MemoryButton.setVisible(false);
+		MemoryLabel.setVisible(false);
+		OperationsLabel.setVisible(false);
+		CreativityLabel.setVisible(false);
+		ProjectsLabel.setVisible(false);
+		ProjectsSeparator.setVisible(false);
+		ImprovedAutoAssemblersButton.setVisible(false);
+		ImprovedAutoAssemblerLabel1.setVisible(false);
+		ImprovedAutoAssemblerLabel2.setVisible(false);
+		
+		//Achievements Pane
+		PencilAchievements.setVisible(true);
+		PencilAchieve1.setVisible(true);
+		PencilAchieve2.setVisible(true);
+		PencilAchieve3.setVisible(true);
+		PencilAchieve4.setVisible(true);
+		PencilAchieve5.setVisible(true);
+		PencilAchieve6.setVisible(true);
+		PencilAchieve7.setVisible(true);
+		PencilAchieve8.setVisible(true);
+		AchievementsSeparator.setVisible(true);
+		AchievementsLabel.setVisible(true);
+		MaterialsDepletedAchieve1.setVisible(true);
+		MaterialsDepletedAchieve2.setVisible(true);
+		MaterialsDepletedAchieve3.setVisible(true);
+		MaterialsDepletedAchieve4.setVisible(true);
+		MaterialsDepletedAchieve5.setVisible(true);
+		MaterialsDepletedAchieve6.setVisible(true);
+		MaterialsDepletedAchieve7.setVisible(true);
+		MaterialsDepletedAchieve8.setVisible(true);
+		MaterialsDepletedAchievements.setVisible(true);
+		
+		//Options Pane
+		GUImodeLabel.setVisible(false);
+		GUImode1Label.setVisible(false);
+		GUImode2Label.setVisible(false);
+		GUImode3Label.setVisible(false);
+		GUImode4Label.setVisible(false);
+		GUImode5Label.setVisible(false);
+		GUImode6Label.setVisible(false);
+		GUImode7Label.setVisible(false);
+
 	}
 	
+	
+	
+	//--------------Options Pane
+	public static void options() {
+		//Menu Bar
+		Save.setVisible(false);
+		Load.setVisible(false);
+		Options.setVisible(false);
+		Back.setVisible(true);
+		Achievements.setVisible(false);
+		
+		//Column 1
+		DeveloperMode.setVisible(false);
+		PencilLabel.setVisible(false);
+		MakePencil.setVisible(false);
+		BusinessLabel.setVisible(false);
+		Business.setVisible(false);
+		FundsLabel.setVisible(false);
+		InventoryLabel.setVisible(false);
+		PricePerPencilLabel.setVisible(false);
+		IncreasePrice.setVisible(false);
+		DecreasePrice.setVisible(false);
+		DemandLabel.setVisible(false);
+		MarketingUpgrade.setVisible(false);
+		MarketingLvlLabel.setVisible(false);
+		MarketingUpgradeCost.setVisible(false);
+		label2.setVisible(false);
+		ManufacturingLabel.setVisible(false);
+		ManufacturingSeperator.setVisible(false);
+		PencilsPerSecond.setVisible(false);
+		WoodBuy.setVisible(false);
+		WoodAmtLabel.setVisible(false);
+		WoodCostLabel.setVisible(false);
+		LeadBuy.setVisible(false);
+		LeadAmtLabel.setVisible(false);
+		LeadCostLabel.setVisible(false);
+		AutoAssemblerBuy.setVisible(false);
+		AutoAssemblerLabel.setVisible(false);
+		AutoAssemblerCostLabel.setVisible(false);
+		ImprovedWoodCuttingLabel1.setVisible(false);
+		ImprovedWoodCuttingLabel2.setVisible(false);
+		ImprovedWoodCuttingButton.setVisible(false);
+		
+		//Column 2
+		ComputationalResourcesLabel.setVisible(false);
+		ComputationalResourcesSeparator.setVisible(false);
+		TrustLabel.setVisible(false);
+		Up1TrustAt.setVisible(false);
+		ProcessorsButton.setVisible(false);
+		ProcessorsLabel.setVisible(false);
+		MemoryButton.setVisible(false);
+		MemoryLabel.setVisible(false);
+		OperationsLabel.setVisible(false);
+		CreativityLabel.setVisible(false);
+		ProjectsLabel.setVisible(false);
+		ProjectsSeparator.setVisible(false);
+		ImprovedAutoAssemblersButton.setVisible(false);
+		ImprovedAutoAssemblerLabel1.setVisible(false);
+		ImprovedAutoAssemblerLabel2.setVisible(false);
+		
+		//Achievements Pane
+		PencilAchievements.setVisible(false);
+		PencilAchieve1.setVisible(false);
+		PencilAchieve2.setVisible(false);
+		PencilAchieve3.setVisible(false);
+		PencilAchieve4.setVisible(false);
+		PencilAchieve5.setVisible(false);
+		PencilAchieve6.setVisible(false);
+		PencilAchieve7.setVisible(false);
+		PencilAchieve8.setVisible(false);
+		AchievementsSeparator.setVisible(false);
+		AchievementsLabel.setVisible(false);
+		MaterialsDepletedAchieve1.setVisible(false);
+		MaterialsDepletedAchieve2.setVisible(false);
+		MaterialsDepletedAchieve3.setVisible(false);
+		MaterialsDepletedAchieve4.setVisible(false);
+		MaterialsDepletedAchieve5.setVisible(false);
+		MaterialsDepletedAchieve6.setVisible(false);
+		MaterialsDepletedAchieve7.setVisible(false);
+		MaterialsDepletedAchieve8.setVisible(false);
+		MaterialsDepletedAchievements.setVisible(false);
+		
+		//Options Pane
+		GUImodeLabel.setVisible(true);
+		GUImode1Label.setVisible(true);
+		GUImode2Label.setVisible(true);
+		GUImode3Label.setVisible(true);
+		GUImode4Label.setVisible(true);
+		GUImode5Label.setVisible(true);
+		GUImode6Label.setVisible(true);
+		GUImode7Label.setVisible(true);
+	}
 	public static void main(String[] args) 
 	{//Beginning of main
 		Load();
@@ -746,6 +1161,121 @@ public class Clicker_Game implements ActionListener
 				AutoAssemblerCostLabel.setVisible(true);
 				}
 			}
+			if(Pencils >= 100) {
+				if(AchievementsLabel.isVisible()) {
+					PencilAchieve1.setBorder(border2);
+					PencilAchieve1.setForeground(BLACK);
+					PencilAchieve1.setBackground(GREEN);
+				}
+			}
+			if(Pencils >= 500) {
+				if(AchievementsLabel.isVisible()) {
+					PencilAchieve2.setBorder(border2);
+					PencilAchieve2.setForeground(BLACK);
+					PencilAchieve2.setBackground(GREEN);
+				}
+			}
+			if(Pencils >= 1000) {
+				if(AchievementsLabel.isVisible()) {
+					PencilAchieve3.setBorder(border2);
+					PencilAchieve3.setForeground(BLACK);
+					PencilAchieve3.setBackground(GREEN);
+				}
+			}
+			if(Pencils >= 2500) {
+				if(AchievementsLabel.isVisible()) {
+					PencilAchieve4.setBorder(border2);
+					PencilAchieve4.setForeground(BLACK);
+					PencilAchieve4.setBackground(GREEN);
+				}
+			}
+			if(Pencils >= 5000) {
+				if(AchievementsLabel.isVisible()) {
+					PencilAchieve5.setBorder(border2);
+					PencilAchieve5.setForeground(BLACK);
+					PencilAchieve5.setBackground(GREEN);
+				}
+			}
+			if(Pencils >= 10000) {
+				if(AchievementsLabel.isVisible()) {
+					PencilAchieve6.setBorder(border2);
+					PencilAchieve6.setForeground(BLACK);
+					PencilAchieve6.setBackground(GREEN);
+				}
+			}
+			if(Pencils >= 100000) {
+				if(AchievementsLabel.isVisible()) {
+					PencilAchieve7.setBorder(border2);
+					PencilAchieve7.setForeground(BLACK);
+					PencilAchieve7.setBackground(GREEN);
+				}
+			}
+			
+			if(Pencils >= 1000000) {
+				if(AchievementsLabel.isVisible()) {
+					PencilAchieve8.setBorder(border2);
+					PencilAchieve8.setForeground(BLACK);
+					PencilAchieve8.setBackground(GREEN);
+				}
+			}
+			if(MaterialsDepleted >= 1000) {
+				if(AchievementsLabel.isVisible()) {
+					MaterialsDepletedAchieve1.setBorder(border2);
+					MaterialsDepletedAchieve1.setForeground(BLACK);
+					MaterialsDepletedAchieve1.setBackground(DARKBLUE);
+				}
+			}
+			if(MaterialsDepleted >= 2500) {
+				if(AchievementsLabel.isVisible()) {
+					MaterialsDepletedAchieve2.setBorder(border2);
+					MaterialsDepletedAchieve2.setForeground(BLACK);
+					MaterialsDepletedAchieve2.setBackground(DARKBLUE);
+				}
+			}
+			if(MaterialsDepleted >= 5000) {
+				if(AchievementsLabel.isVisible()) {
+					MaterialsDepletedAchieve3.setBorder(border2);
+					MaterialsDepletedAchieve3.setForeground(BLACK);
+					MaterialsDepletedAchieve3.setBackground(DARKBLUE);
+				}
+			}
+			if(MaterialsDepleted >= 10000) {
+				if(AchievementsLabel.isVisible()) {
+					MaterialsDepletedAchieve4.setBorder(border2);
+					MaterialsDepletedAchieve4.setForeground(BLACK);
+					MaterialsDepletedAchieve4.setBackground(DARKBLUE);
+				}
+			}
+			if(MaterialsDepleted >= 50000) {
+				if(AchievementsLabel.isVisible()) {
+					MaterialsDepletedAchieve5.setBorder(border2);
+					MaterialsDepletedAchieve5.setForeground(BLACK);
+					MaterialsDepletedAchieve5.setBackground(DARKBLUE);
+				}
+			}
+			if(MaterialsDepleted >= 100000) {
+				if(AchievementsLabel.isVisible()) {
+					MaterialsDepletedAchieve6.setBorder(border2);
+					MaterialsDepletedAchieve6.setForeground(BLACK);
+					MaterialsDepletedAchieve6.setBackground(DARKBLUE);
+				}
+			}
+			if(MaterialsDepleted >= 500000) {
+				if(AchievementsLabel.isVisible()) {
+					MaterialsDepletedAchieve7.setBorder(border2);
+					MaterialsDepletedAchieve7.setForeground(BLACK);
+					MaterialsDepletedAchieve7.setBackground(DARKBLUE);
+				}
+			}
+			
+			if(MaterialsDepleted >= 1000000) {
+				if(AchievementsLabel.isVisible()) {
+					MaterialsDepletedAchieve8.setBorder(border2);
+					MaterialsDepletedAchieve8.setForeground(BLACK);
+					MaterialsDepletedAchieve8.setBackground(DARKBLUE);
+				}
+			}
+			
 			if(Pencils >= 2000) {
 				if(PencilLabel.isVisible()) {
 				ComputationalResourcesLabel.setVisible(true);
@@ -826,81 +1356,31 @@ public class Clicker_Game implements ActionListener
 		Load.setVisible(true);
 	}//End of fill
 	
-//--------------Options Pane
-	public static void options() {
-		Save.setVisible(false);
-		Load.setVisible(false);
-		Options.setVisible(false);
-		Back.setVisible(true);
-		
-		DeveloperMode.setVisible(false);
-		PencilLabel.setVisible(false);
-		MakePencil.setVisible(false);
-		BusinessLabel.setVisible(false);
-		Business.setVisible(false);
-		FundsLabel.setVisible(false);
-		InventoryLabel.setVisible(false);
-		PricePerPencilLabel.setVisible(false);
-		IncreasePrice.setVisible(false);
-		DecreasePrice.setVisible(false);
-		DemandLabel.setVisible(false);
-		MarketingUpgrade.setVisible(false);
-		MarketingLvlLabel.setVisible(false);
-		MarketingUpgradeCost.setVisible(false);
-		label2.setVisible(false);
-		ManufacturingLabel.setVisible(false);
-		ManufacturingSeperator.setVisible(false);
-		PencilsPerSecond.setVisible(false);
-		WoodBuy.setVisible(false);
-		WoodAmtLabel.setVisible(false);
-		WoodCostLabel.setVisible(false);
-		LeadBuy.setVisible(false);
-		LeadAmtLabel.setVisible(false);
-		LeadCostLabel.setVisible(false);
-		AutoAssemblerBuy.setVisible(false);
-		AutoAssemblerLabel.setVisible(false);
-		AutoAssemblerCostLabel.setVisible(false);
-		ImprovedWoodCuttingLabel1.setVisible(false);
-		ImprovedWoodCuttingLabel2.setVisible(false);
-		ImprovedWoodCuttingButton.setVisible(false);
-		
-		//Column 2
-		ComputationalResourcesLabel.setVisible(false);
-		ComputationalResourcesSeparator.setVisible(false);
-		TrustLabel.setVisible(false);
-		Up1TrustAt.setVisible(false);
-		ProcessorsButton.setVisible(false);
-		ProcessorsLabel.setVisible(false);
-		MemoryButton.setVisible(false);
-		MemoryLabel.setVisible(false);
-		OperationsLabel.setVisible(false);
-		CreativityLabel.setVisible(false);
-		ProjectsLabel.setVisible(false);
-		ProjectsSeparator.setVisible(false);
-		ImprovedAutoAssemblersButton.setVisible(false);
-		ImprovedAutoAssemblerLabel1.setVisible(false);
-		ImprovedAutoAssemblerLabel2.setVisible(false);
-		
-		//Options Pane
-		GUImodeLabel.setVisible(true);
-		GUImode1Label.setVisible(true);
-		GUImode2Label.setVisible(true);
-		GUImode3Label.setVisible(true);
-		GUImode4Label.setVisible(true);
-		GUImode5Label.setVisible(true);
-		GUImode6Label.setVisible(true);
-		GUImode7Label.setVisible(true);
-
-	}
-	
 	public static void SellCalcs() {
 		//Sells every segment of time and  keeps from going negative
+		if(Pencils >= 2000) {
+			while(Pencils>=2000) 
+			{//Beginning of while
+				try {
+					Thread.sleep(75);
+					Operations +=1;
+				}
+				
+				catch (InterruptedException e) 
+				{//Beginning of catch
+					e.printStackTrace();
+				}//End of catch
+				OperationsLabel.setText("Operations: " + number.format(Operations) + "/" + number.format(MaxOperations));
+			}//End of while
+		}
+		
 		if (WoodAmt >= AssemblerAmt && LeadAmt >= AssemblerAmt) {
 			if (AssemblerAmt >= 1) {
 			Pencils += -1*(AssemblerAmt-(SellDemand+AssemblerAmt));
 			Inventory += AssemblerAmt;
 			WoodAmt -= AssemblerAmt*2;
 			LeadAmt -= AssemblerAmt;
+			MaterialsDepleted += AssemblerAmt*3;
 			d = true;
 			}
 		}
@@ -915,7 +1395,6 @@ public class Clicker_Game implements ActionListener
 			d = false;
 			}
 		}
-		
 		if(Inventory ==  0) {
 		}
 		else if(Inventory > 0) {
@@ -1052,8 +1531,6 @@ public class Clicker_Game implements ActionListener
 		
 	}
 	
-	//If button pressed
-	
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{//Beginning of actionPerformed
@@ -1098,11 +1575,15 @@ public class Clicker_Game implements ActionListener
 		}//End of else if
 		else if (e.getActionCommand() == Actions.DEV.name())
 		{//Beginning of else if
-			Funds = 1000000;
-			Pencils = 100000;
+			Funds = 100000000;
+			Pencils = 10000000;
 			PencilLabel.setText("Pencils: " + number.format(Pencils));
 			FundsLabel.setText("Available Funds: " + money.format(Funds));
 		}//End of else if
+		else if (e.getActionCommand() == Actions.ACHIEVEMENTS.name())
+		{
+			achievements();
+		}
 		//Go back to top
 		else if (e.getActionCommand() == Actions.OPTIONS.name())
 		{//Beginning of else if
@@ -1143,6 +1624,7 @@ public class Clicker_Game implements ActionListener
 			Inventory += 1;
 			WoodAmt -= 2;
 			LeadAmt -= 1;
+			MaterialsDepleted += 3;
 			PencilLabel.setText("Pencils: " + number.format(Pencils));
 			InventoryLabel.setText("Unsold Inventory: " + number.format(Inventory));
 			WoodAmtLabel.setText(number.format(WoodAmt) + " pieces");
