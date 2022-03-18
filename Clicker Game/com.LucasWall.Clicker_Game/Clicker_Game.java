@@ -931,15 +931,14 @@ public class Clicker_Game implements ActionListener
 		GUImode7Label.setVisible(false);
 		GUImode7Label.setFont(new Font("Serif", Font.PLAIN, 24));
 		
+		frame.setVisible(true);
+		frame.setTitle("Transcendental Pencils");
+		
 		if (panel.isVisible()) 
 		{//Beginning of if
 			fill();
 		}//End of if
 		Modes();
-		
-		//set frame to visible
-		frame.setVisible(true);
-		frame.setTitle("Transcendental Pencils");
 	}
 	public static void Modes() {
 		Timer timer = new Timer();
