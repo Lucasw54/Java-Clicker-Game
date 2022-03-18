@@ -23,6 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.border.Border;
 
@@ -114,7 +115,44 @@ public class Clicker_Game implements ActionListener
 	public static JButton CreativityButton;
 	public static JLabel CreativityLabel1;
 	public static JLabel CreativityLabel2;
+	public static boolean UpgradeA = true;
+	public static boolean UpgradeB = true;
+	public static boolean UpgradeC = true;
+	public static boolean UpgradeD = true;
+	public static boolean UpgradeE = true;
+	public static boolean UpgradeF = true;
+	public static boolean UpgradeG = true;
+	public static boolean UpgradeH = true;
+	public static boolean UpgradeI = true;
+	public static boolean UpgradeJ = true;
+	public static boolean UpgradeK = true;
+	public static boolean UpgradeL = true;
+	public static boolean UpgradeM = true;
+	public static boolean UpgradeN = true;
+	public static boolean UpgradeO = true;
+	public static boolean UpgradeP = true;
+	public static boolean UpgradeQ = true;
+	public static boolean UpgradeR = true;
+	public static boolean UpgradeS = true;
+	public static boolean UpgradeT = true;
 	
+	public static double Slot1 = 1;
+	public static double Slot2 = 1;
+	public static double Slot3 = 1;
+	public static double Slot4 = 1;
+	public static double Slot5 = 1;
+	public static double Slot6 = 1;
+	
+	public static JLabel Slot1Obj1;
+	public static JLabel Slot1Obj2;
+	public static JButton Slot1Obj3;
+	public static JLabel Slot2Obj1;
+	public static JLabel Slot2Obj2;
+	public static JButton Slot2Obj3;
+	public static JLabel Slot3Obj1;
+	public static JLabel Slot3Obj2;
+	public static JButton Slot3Obj3;
+
 	//------Achievements
 	public static JButton Achievements;
 	public static JLabel AchievementsLabel;
@@ -194,11 +232,15 @@ public class Clicker_Game implements ActionListener
 	public static double WoodAmt = 1000;
 	public static double LeadAmt = 500;
 	public static double WoodCost = 5;
+	public static double WoodRefil = 1000;
 	public static double LeadCost = 7;
+	public static double LeadRefil = 500;
 	public static double AssemblerAmt = 0;
 	public static double AssemblerCost = 5;
-	public static double Trust = 2;
-	public static double TrustUp = 3000;
+	public static double Trust = 0;
+	public static double TrustUsed = 0;
+	public static double TrustRate = 75;
+	public static double TrustUp = 1000;
 	public static double Processors = 1;
 	public static double Memory = 1;
 	public static double Operations = 0;
@@ -217,6 +259,7 @@ public class Clicker_Game implements ActionListener
 	public static final Color BLACK = new Color(1, 2, 2);
 	public static final Color GREEN = new Color(75,181,67);
 	public static final Color DARKBLUE = new Color(70, 88, 250);
+	public static final Color NEWGREY = new Color(130, 122, 121);
 	
 	//------Decimal Format
 	public static DecimalFormat money = new DecimalFormat("$###,###,##0.00");
@@ -251,7 +294,11 @@ public class Clicker_Game implements ActionListener
 		LEAD,
 		ASSEMBLERBUY,
 		PROCESSORS,
-		MEMORY
+		MEMORY,
+		IMPROVEDAUTOASSEMBLERS,
+		IMPROVEDWOODCUTTING,
+		IMPROVEDLEADMOLDING
+		
 	}//End of Actions
 	
 	public static void Load() {
@@ -467,7 +514,7 @@ public class Clicker_Game implements ActionListener
 		panel.add(MarketingLvlLabel);
 
 		MarketingUpgradeCost = new JLabel("Cost: " + UpgradeMarketingCost);
-		MarketingUpgradeCost.setBounds(20, 310, 100, 25);
+		MarketingUpgradeCost.setBounds(20, 310, 280, 25);
 		panel.add(MarketingUpgradeCost);
 		
 		ManufacturingLabel = new JLabel("Manufacturing");
@@ -577,6 +624,8 @@ public class Clicker_Game implements ActionListener
 		
 		ProcessorsButton = new JButton("Processors");
 		ProcessorsButton.setBounds(310, 190, 100, 25);
+		ProcessorsButton.setActionCommand(Actions.PROCESSORS.name());
+		ProcessorsButton.addActionListener(instance);
 		panel.add(ProcessorsButton);
 		
 		ProcessorsLabel = new JLabel(number.format(Processors));
@@ -585,6 +634,8 @@ public class Clicker_Game implements ActionListener
 		
 		MemoryButton = new JButton("Memory");
 		MemoryButton.setBounds(310, 220, 100 , 25);
+		MemoryButton.setActionCommand(Actions.MEMORY.name());
+		MemoryButton.addActionListener(instance);
 		panel.add(MemoryButton);
 		
 		MemoryLabel = new JLabel(number.format(Memory));
@@ -621,6 +672,8 @@ public class Clicker_Game implements ActionListener
 		
 		ImprovedAutoAssemblersButton = new JButton();
 		ImprovedAutoAssemblersButton.setBounds(320, 350, 300, 70);
+		ImprovedAutoAssemblersButton.setActionCommand(Actions.IMPROVEDAUTOASSEMBLERS.name());
+		ImprovedAutoAssemblersButton.addActionListener(instance);
 		panel.add(ImprovedAutoAssemblersButton);
 		
 		ImprovedWoodCuttingLabel1 = new JLabel("Improved Wood Cutting (" + number.format(OpsNeededImprovedWoodCutting) + " ops)");
@@ -634,23 +687,28 @@ public class Clicker_Game implements ActionListener
 		
 		ImprovedWoodCuttingButton = new JButton();
 		ImprovedWoodCuttingButton.setBounds(320, 420, 300, 70);
+		ImprovedWoodCuttingButton.setActionCommand(Actions.IMPROVEDWOODCUTTING.name());
+		ImprovedWoodCuttingButton.addActionListener(instance);
 		panel.add(ImprovedWoodCuttingButton);
 		
-		//public static JButton ImprovedAutoAssemblersButton;
-		//public static JLabel ImprovedAutoAssemblerLabel;
-		//public static JButton ImprovedWoodCuttingButton;
-		//public static JLabel ImprovedWoodCuttingLabel1;
-		//public static JLabel ImprovedWoodCuttingLabel2;
-		//public static JButton ImprovedLeadMoldingButton;
-		//public static JLabel ImprovedLeadMoldingLabel1;
-		//public static JLabel ImprovedLeadMoldingLabel2;
-		//public static JButton RevTrackerButton;
-		//public static JLabel RevTrackerLabel1;
-		//public static JLabel RevTrackerLabel2;
-		//public static JButton CreativityButton;
-		//public static JLabel CreativityLabel1;
-		//public static JLabel CreativityLabel2;
+		ImprovedLeadMoldingLabel1 = new JLabel("Improved Lead Molding (" + number.format(OpsNeededImprovedLeadMolding) + " ops)");
+		ImprovedLeadMoldingLabel1.setBounds(365, 485, 300, 60);
+		panel.add(ImprovedLeadMoldingLabel1);
+		ImprovedLeadMoldingLabel1.setFont(new Font("Arial", Font.BOLD, 13));
 		
+		ImprovedLeadMoldingLabel2 = new JLabel("50% more lead supply after molding");
+		ImprovedLeadMoldingLabel2.setBounds(355, 505, 300, 60);
+		panel.add(ImprovedLeadMoldingLabel2);
+		
+		ImprovedLeadMoldingButton = new JButton();
+		ImprovedLeadMoldingButton.setBounds(320, 490, 300, 70);
+		ImprovedLeadMoldingButton.setActionCommand(Actions.IMPROVEDLEADMOLDING.name());
+		ImprovedLeadMoldingButton.addActionListener(instance);
+		panel.add(ImprovedLeadMoldingButton);
+		
+		ImprovedLeadMoldingButton.setVisible(false);
+		ImprovedLeadMoldingLabel2.setVisible(false);
+		ImprovedLeadMoldingLabel1.setVisible(false);
 		ImprovedWoodCuttingLabel1.setVisible(false);
 		ImprovedWoodCuttingLabel2.setVisible(false);
 		ImprovedWoodCuttingButton.setVisible(false);
@@ -873,15 +931,15 @@ public class Clicker_Game implements ActionListener
 		GUImode7Label.setVisible(false);
 		GUImode7Label.setFont(new Font("Serif", Font.PLAIN, 24));
 		
-		//set frame to visible
-		frame.setVisible(true);
-		frame.setTitle("Transcendental Pencils");
-		
 		if (panel.isVisible()) 
 		{//Beginning of if
 			fill();
 		}//End of if
 		Modes();
+		
+		//set frame to visible
+		frame.setVisible(true);
+		frame.setTitle("Transcendental Pencils");
 	}
 	public static void Modes() {
 		Timer timer = new Timer();
@@ -985,10 +1043,7 @@ public class Clicker_Game implements ActionListener
 		AutoAssemblerBuy.setVisible(false);
 		AutoAssemblerLabel.setVisible(false);
 		AutoAssemblerCostLabel.setVisible(false);
-		ImprovedWoodCuttingLabel1.setVisible(false);
-		ImprovedWoodCuttingLabel2.setVisible(false);
-		ImprovedWoodCuttingButton.setVisible(false);
-		
+
 		//Column 2
 		ComputationalResourcesLabel.setVisible(false);
 		ComputationalResourcesSeparator.setVisible(false);
@@ -1002,9 +1057,15 @@ public class Clicker_Game implements ActionListener
 		CreativityLabel.setVisible(false);
 		ProjectsLabel.setVisible(false);
 		ProjectsSeparator.setVisible(false);
-		ImprovedAutoAssemblersButton.setVisible(false);
 		ImprovedAutoAssemblerLabel1.setVisible(false);
 		ImprovedAutoAssemblerLabel2.setVisible(false);
+		ImprovedAutoAssemblersButton.setVisible(false);
+		ImprovedWoodCuttingLabel1.setVisible(false);
+		ImprovedWoodCuttingLabel2.setVisible(false);
+		ImprovedWoodCuttingButton.setVisible(false);
+		ImprovedLeadMoldingButton.setVisible(false);
+		ImprovedLeadMoldingLabel2.setVisible(false);
+		ImprovedLeadMoldingLabel1.setVisible(false);
 		
 		//Achievements Pane
 		PencilAchievements.setVisible(true);
@@ -1079,9 +1140,6 @@ public class Clicker_Game implements ActionListener
 		AutoAssemblerBuy.setVisible(false);
 		AutoAssemblerLabel.setVisible(false);
 		AutoAssemblerCostLabel.setVisible(false);
-		ImprovedWoodCuttingLabel1.setVisible(false);
-		ImprovedWoodCuttingLabel2.setVisible(false);
-		ImprovedWoodCuttingButton.setVisible(false);
 		
 		//Column 2
 		ComputationalResourcesLabel.setVisible(false);
@@ -1096,9 +1154,15 @@ public class Clicker_Game implements ActionListener
 		CreativityLabel.setVisible(false);
 		ProjectsLabel.setVisible(false);
 		ProjectsSeparator.setVisible(false);
-		ImprovedAutoAssemblersButton.setVisible(false);
 		ImprovedAutoAssemblerLabel1.setVisible(false);
 		ImprovedAutoAssemblerLabel2.setVisible(false);
+		ImprovedAutoAssemblersButton.setVisible(false);
+		ImprovedWoodCuttingLabel1.setVisible(false);
+		ImprovedWoodCuttingLabel2.setVisible(false);
+		ImprovedWoodCuttingButton.setVisible(false);
+		ImprovedLeadMoldingButton.setVisible(false);
+		ImprovedLeadMoldingLabel2.setVisible(false);
+		ImprovedLeadMoldingLabel1.setVisible(false);
 		
 		//Achievements Pane
 		PencilAchievements.setVisible(false);
@@ -1153,6 +1217,66 @@ public class Clicker_Game implements ActionListener
 				e.printStackTrace();
 			}//End of catch
 			DemandShow = Demand/100;
+			if(Operations >= OpsNeededImprovedAutoAssemblers) {
+				ImprovedAutoAssemblersButton.setEnabled(true);
+				ImprovedAutoAssemblerLabel1.setForeground(BLACK);
+				ImprovedAutoAssemblerLabel2.setForeground(BLACK);
+			}
+			else if(Operations < OpsNeededImprovedAutoAssemblers) {
+				ImprovedAutoAssemblersButton.setEnabled(false);
+				ImprovedAutoAssemblerLabel1.setForeground(NEWGREY);
+				ImprovedAutoAssemblerLabel2.setForeground(NEWGREY);
+			}
+			if(Operations >= OpsNeededImprovedWoodCutting) {
+				ImprovedWoodCuttingButton.setEnabled(true);
+				ImprovedWoodCuttingLabel1.setForeground(BLACK);
+				ImprovedWoodCuttingLabel2.setForeground(BLACK);
+			}
+			else if(Operations < OpsNeededImprovedWoodCutting) {
+				ImprovedWoodCuttingButton.setEnabled(false);
+				ImprovedWoodCuttingLabel1.setForeground(NEWGREY);
+				ImprovedWoodCuttingLabel2.setForeground(NEWGREY);
+			}
+			if(Operations >= OpsNeededImprovedLeadMolding) {
+				ImprovedLeadMoldingButton.setEnabled(true);
+				ImprovedLeadMoldingLabel2.setForeground(BLACK);
+				ImprovedLeadMoldingLabel1.setForeground(BLACK);
+			}
+			else if(Operations < OpsNeededImprovedLeadMolding) {
+				ImprovedLeadMoldingButton.setEnabled(false);
+				ImprovedLeadMoldingLabel2.setForeground(NEWGREY);
+				ImprovedLeadMoldingLabel1.setForeground(NEWGREY);
+				
+			}
+			
+			if(Slot2 > 1) {
+				Slot2Obj1.setBounds(355, 345, 300, 60);
+				Slot2Obj2.setBounds(337, 365, 300, 60);
+				Slot2Obj3.setBounds(320, 350, 300, 70);
+			}
+			if(Slot3 > 1) {
+				Slot3Obj1.setBounds(365, 415, 300, 60);
+				Slot3Obj2.setBounds(355, 435, 300, 60);
+				Slot3Obj3.setBounds(320, 420, 300, 70);
+			}
+			if(Slot4 > 1) {
+				Slot2Obj1.setBounds(1,1,1,1);
+				Slot2Obj2.setBounds(1,1,1,1);
+				Slot2Obj3.setBounds(1,1,1,1);
+				Slot4 -=1;
+			}
+			if(Slot5 > 1) {
+				Slot2Obj1.setBounds(1,1,1,1);
+				Slot2Obj2.setBounds(1,1,1,1);
+				Slot2Obj3.setBounds(1,1,1,1);
+				Slot5 -=1;
+			}
+			if(Slot6 > 1) {
+				Slot2Obj1.setBounds(1,1,1,1);
+				Slot2Obj2.setBounds(1,1,1,1);
+				Slot2Obj3.setBounds(1,1,1,1);
+				Slot6 -=1;
+			}
 			
 			if(Pencils >= 50) {
 				if(PencilLabel.isVisible()) {
@@ -1161,6 +1285,18 @@ public class Clicker_Game implements ActionListener
 				AutoAssemblerCostLabel.setVisible(true);
 				}
 			}
+			if(Pencils >= TrustUp) {
+				Trust+=1;
+				if(Trust < 5) {
+				TrustUp+= 1000;
+				}
+				else if(Trust >=5) {
+					TrustUp += 3000;
+				}
+				TrustLabel.setText("Trust: " + number.format(Trust));
+				Up1TrustAt.setText("+1 Trust at: " + number.format(TrustUp) + " clips");
+			}
+			
 			if(Pencils >= 100) {
 				if(AchievementsLabel.isVisible()) {
 					PencilAchieve1.setBorder(border2);
@@ -1290,13 +1426,44 @@ public class Clicker_Game implements ActionListener
 				CreativityLabel.setVisible(true);
 				ProjectsLabel.setVisible(true);
 				ProjectsSeparator.setVisible(true);
-				ImprovedAutoAssemblerLabel1.setVisible(true);
-				ImprovedAutoAssemblerLabel2.setVisible(true);
-				ImprovedAutoAssemblersButton.setVisible(true);
-				ImprovedWoodCuttingLabel1.setVisible(true);
-				ImprovedWoodCuttingLabel2.setVisible(true);
-				ImprovedWoodCuttingButton.setVisible(true);
+				if(UpgradeA == true) {
+					ImprovedAutoAssemblerLabel1.setVisible(true);
+					ImprovedAutoAssemblerLabel2.setVisible(true);
+					ImprovedAutoAssemblersButton.setVisible(true);
+					Slot1Obj1 = ImprovedAutoAssemblerLabel1;
+					Slot1Obj2 = ImprovedAutoAssemblerLabel2;
+					Slot1Obj3 = ImprovedAutoAssemblersButton;
+					
 				}
+				if (UpgradeB == true) {
+					ImprovedWoodCuttingLabel1.setVisible(true);
+					ImprovedWoodCuttingLabel2.setVisible(true);
+					ImprovedWoodCuttingButton.setVisible(true);
+					Slot2Obj1 = ImprovedWoodCuttingLabel1;
+					Slot2Obj2 = ImprovedWoodCuttingLabel2;
+					Slot2Obj3 = ImprovedWoodCuttingButton;
+				}
+				if (UpgradeC == true) {
+					ImprovedLeadMoldingButton.setVisible(true);
+					ImprovedLeadMoldingLabel2.setVisible(true);
+					ImprovedLeadMoldingLabel1.setVisible(true);
+					Slot3Obj1 = ImprovedLeadMoldingLabel1;
+					Slot3Obj2 = ImprovedLeadMoldingLabel2;
+					Slot3Obj3 = ImprovedLeadMoldingButton;
+				}
+				}
+			}
+			if(TrustUsed < Trust) {
+				ProcessorsButton.setEnabled(true);
+			}
+			else if(TrustUsed >= Trust) {
+				ProcessorsButton.setEnabled(false);
+			}
+			if(TrustUsed < Trust) {
+				MemoryButton.setEnabled(true);
+			}
+			else if(TrustUsed >= Trust) {
+				MemoryButton.setEnabled(false);
 			}
 			if(WoodAmt >= 2 && LeadAmt >= 1) {
 				MakePencil.setEnabled(true);
@@ -1328,7 +1495,6 @@ public class Clicker_Game implements ActionListener
 			else if (Funds <= AssemblerCost) {
 				AutoAssemblerBuy.setEnabled(false);
 			}
-			
 		}
 		
 	}
@@ -1359,10 +1525,10 @@ public class Clicker_Game implements ActionListener
 	public static void SellCalcs() {
 		//Sells every segment of time and  keeps from going negative
 		if(Pencils >= 2000) {
-			while(Pencils>=2000) 
+			while(Operations < MaxOperations) 
 			{//Beginning of while
 				try {
-					Thread.sleep(75);
+					Thread.sleep((long) TrustRate);
 					Operations +=1;
 				}
 				
@@ -1373,7 +1539,6 @@ public class Clicker_Game implements ActionListener
 				OperationsLabel.setText("Operations: " + number.format(Operations) + "/" + number.format(MaxOperations));
 			}//End of while
 		}
-		
 		if (WoodAmt >= AssemblerAmt && LeadAmt >= AssemblerAmt) {
 			if (AssemblerAmt >= 1) {
 			Pencils += -1*(AssemblerAmt-(SellDemand+AssemblerAmt));
@@ -1575,8 +1740,8 @@ public class Clicker_Game implements ActionListener
 		}//End of else if
 		else if (e.getActionCommand() == Actions.DEV.name())
 		{//Beginning of else if
-			Funds = 100000000;
-			Pencils = 10000000;
+			Funds = 100000;
+			Pencils = 2000;
 			PencilLabel.setText("Pencils: " + number.format(Pencils));
 			FundsLabel.setText("Available Funds: " + money.format(Funds));
 		}//End of else if
@@ -1708,6 +1873,8 @@ public class Clicker_Game implements ActionListener
 			Funds -= UpgradeMarketingCost;
 			Demand += 200;
 			DemandShow = Demand/100;
+			UpgradeMarketingCost += UpgradeMarketingCost;
+			MarketingUpgradeCost.setText("Cost: " + money.format(UpgradeMarketingCost));
 			MarketingLvlLabel.setText("Level: " + number.format(MarketingLvl));
 			DemandLabel.setText("Public Demand: " + number.format(DemandShow) +"%");
 			FundsLabel.setText("Available Funds: " + money.format(Funds));
@@ -1716,7 +1883,7 @@ public class Clicker_Game implements ActionListener
 		else if (e.getActionCommand() == Actions.WOOD.name())
 		{
 		if (Funds >= WoodCost) {
-			WoodAmt += 1000;
+			WoodAmt += WoodRefil;
 			Funds -= WoodCost;
 			WoodAmtLabel.setText(number.format(WoodAmt) + " pieces");
 			FundsLabel.setText("Available Funds: " + money.format(Funds));
@@ -1725,7 +1892,7 @@ public class Clicker_Game implements ActionListener
 		else if (e.getActionCommand() == Actions.LEAD.name())
 		{
 		if (Funds >= LeadCost) {
-			LeadAmt += 500;
+			LeadAmt += LeadRefil;
 			Funds -= LeadCost;
 			LeadAmtLabel.setText(number.format(LeadAmt) + " rods");
 			FundsLabel.setText("Available Funds: " + money.format(Funds));
@@ -1737,7 +1904,9 @@ public class Clicker_Game implements ActionListener
 		if (Funds >= AssemblerCost) {
 			AssemblerAmt += 1;
 			Funds -= AssemblerCost;
+			AssemblerCost += AssemblerCost * .05;
 			AutoAssemblerLabel.setText(number.format(AssemblerAmt));
+			AutoAssemblerCostLabel.setText("Cost: " + money.format(AssemblerCost));
 			FundsLabel.setText("Available Funds: " + money.format(Funds));
 			PencilsPerSecondValue = AssemblerAmt;
 			PencilsPerSecond.setText("Pencils per Second: " + seminumber.format(PencilsPerSecondValue));
@@ -1745,11 +1914,69 @@ public class Clicker_Game implements ActionListener
 		}
 		else if (e.getActionCommand() == Actions.PROCESSORS.name())
 		{//Beginning of else if
-			
+			if(TrustUsed < Trust) {
+				Processors+= 1;
+				TrustUsed += 1;
+				if (TrustRate > 0) {
+				TrustRate -= 5;
+				}
+				OperationsLabel.setText("Operations: " + number.format(Operations) + "/" + number.format(MaxOperations));
+				ProcessorsLabel.setText(number.format(Processors));
+			}
 		}//End of else if
 		else if (e.getActionCommand() == Actions.MEMORY.name())
 		{//Beginning of else if
-			
+			if(TrustUsed < Trust) {
+			MaxOperations+= 1000;
+			Memory+= 1;
+			TrustUsed += 1;
+			OperationsLabel.setText("Operations: " + number.format(Operations) + "/" + number.format(MaxOperations));
+			MemoryLabel.setText(number.format(Memory));
+			}
+		}//End of else if
+		else if (e.getActionCommand() == Actions.IMPROVEDAUTOASSEMBLERS.name())
+		{//Beginning of else if
+			if(Operations >= OpsNeededImprovedAutoAssemblers) {
+				Operations -= OpsNeededImprovedAutoAssemblers;
+				UpgradeA = false;
+				Slot2 += 1;
+				Slot3 += 1;
+				Slot4 += 1;
+				Slot5 += 1;
+				Slot6 += 1;
+				ImprovedAutoAssemblerLabel1.setVisible(false);
+				ImprovedAutoAssemblerLabel2.setVisible(false);
+				ImprovedAutoAssemblersButton.setVisible(false);
+			}
+		}//End of else if
+		else if (e.getActionCommand() == Actions.IMPROVEDWOODCUTTING.name())
+		{//Beginning of else if
+			if(Operations >= OpsNeededImprovedWoodCutting) {
+				Operations -= OpsNeededImprovedWoodCutting;
+				UpgradeB = false;
+				Slot3 += 1;
+				Slot4 += 1;
+				Slot5 += 1;
+				Slot6 += 1;
+				WoodRefil += 1000;
+				ImprovedWoodCuttingLabel1.setVisible(false);
+				ImprovedWoodCuttingLabel2.setVisible(false);
+				ImprovedWoodCuttingButton.setVisible(false);
+			}
+		}//End of else if
+		else if (e.getActionCommand() == Actions.IMPROVEDLEADMOLDING.name())
+		{//Beginning of else if
+			if(Operations >= OpsNeededImprovedLeadMolding) {
+				Operations -= OpsNeededImprovedLeadMolding;
+				UpgradeC = false;
+				Slot4 += 1;
+				Slot5 += 1;
+				Slot6 += 1;
+				WoodRefil += 500;
+				ImprovedLeadMoldingLabel1.setVisible(false);
+				ImprovedLeadMoldingLabel2.setVisible(false);
+				ImprovedLeadMoldingButton.setVisible(false);
+			}
 		}//End of else if
 	}//End of actionPerformed
 }//End of Clicker_Game
